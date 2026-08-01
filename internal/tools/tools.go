@@ -34,6 +34,9 @@ func SetWorkDir(dir string) error {
 	return nil
 }
 
+// WorkDir returns the resolved absolute sandbox root set by SetWorkDir.
+func WorkDir() string { return workDir }
+
 // skipDirNames lists directories that walks (Grep, CountLinesByExt,
 // FileTree) skip entirely: VCS/dependency directories and common build
 // output directories, whose contents are either irrelevant or, worse,

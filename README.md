@@ -51,11 +51,17 @@ not a call dispatched from a fixed schema.
 
 ```
 cmd/agent/main.go        CLI entrypoint (flags, one-shot or REPL mode)
+cmd/web/main.go           Web UI: same agent, served over HTTP with a streamed browser view
 internal/llm/             Provider interface + Ollama and Anthropic backends
 internal/agent/           The generate -> execute -> observe -> fix loop
 internal/executor/        Runs generated Go code via yaegi (embedded interpreter)
 internal/tools/           The sandboxed API generated code is allowed to call
 ```
+
+`cmd/agent` and `cmd/web` are both thin front-ends over the same
+`internal/agent` + `internal/executor` + `internal/tools` core — neither one
+duplicates the loop, they just call `agent.New(...).Do(...)` and render the
+result differently (stdout vs. a browser page).
 
 - **`internal/tools`** implements file read/write/list, a directory tree
   renderer, grep, a line-counter, and a whitelisted command runner
@@ -115,6 +121,7 @@ Requires Go 1.23+.
 
 ```bash
 go build -o bin/agent ./cmd/agent
+go build -o bin/web ./cmd/web
 ```
 
 ### Model backend
@@ -151,6 +158,35 @@ Run with no task argument for an interactive REPL:
 > find all TODO comments and write a summary to todos.md
 > exit
 ```
+
+### Web UI
+
+Same agent, same sandbox, same provider selection — just a browser front-end
+instead of a terminal. It's a single Go binary (the page is embedded via
+`go:embed`, no separate static file server or JS build step needed):
+
+```bash
+export OLLAMA_MODEL=qwen2.5-coder:7b   # or export ANTHROPIC_API_KEY=sk-...
+./bin/web -workdir ./some/project -addr :8080
+```
+
+Open `http://localhost:8080`. Type a task (or click one of the example
+chips) and hit Run. Each generate/execute/fix attempt streams in as its own
+card — generated code, execution output, and whether it compiled/ran clean —
+followed by the final answer, so you can watch the self-correction loop
+happen in real time instead of only seeing the end result.
+
+```
+-addr string          address to listen on (default ":8080")
+-workdir string        sandbox root the agent may read/write (default ".")
+-max-attempts int      generate/execute/fix attempts per task (default 3)
+```
+
+Under the hood, `POST /api/run` streams newline-delimited JSON
+(one `{"type":"step",...}` object per attempt, then one
+`{"type":"done",...}`) and the page reads it incrementally with
+`fetch()` + a `ReadableStream`, rather than waiting for the whole task to
+finish before showing anything.
 
 ### Tests
 
@@ -216,4 +252,8 @@ Number of .go files: 0
 - No persistent conversation memory across separate CLI invocations.
 - No true kill-on-timeout for runaway generated code (see above).
 - No multi-file / multi-package generated programs — one `Run()` per task.
-- No streaming output from the model while it's generating.
+- No token-level streaming from the model itself; both front-ends show a
+  complete attempt (code + result) once it finishes, not word-by-word.
+- The web UI has no auth and binds to a single fixed sandbox root for the
+  lifetime of the process — it's meant for local demoing, not for exposing
+  on a network with untrusted users.
