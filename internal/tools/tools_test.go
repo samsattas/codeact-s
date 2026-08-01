@@ -93,6 +93,36 @@ func TestCountLinesByExt(t *testing.T) {
 	}
 }
 
+func TestCountLinesByExtSkipsBuildOutputDirs(t *testing.T) {
+	dir := setup(t)
+	if err := os.WriteFile(filepath.Join(dir, "a.go"), []byte("l1\nl2\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Join(dir, "bin"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	// Simulate a compiled binary artifact: arbitrary bytes that happen to
+	// contain many newline bytes, which would otherwise wildly inflate the
+	// line count for extension-less files.
+	fakeBinary := make([]byte, 4096)
+	for i := range fakeBinary {
+		fakeBinary[i] = byte(i % 251)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "bin", "agent"), fakeBinary, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	counts, err := CountLinesByExt(".")
+	if err != nil {
+		t.Fatalf("CountLinesByExt: %v", err)
+	}
+	if counts[".go"] != 2 {
+		t.Fatalf("got %v", counts)
+	}
+	if _, ok := counts["(no ext)"]; ok {
+		t.Fatalf("expected bin/ to be skipped entirely, got counts: %v", counts)
+	}
+}
+
 func TestRunCommandAllowlist(t *testing.T) {
 	setup(t)
 	if _, err := RunCommand("rm", "-rf", "/"); err == nil {

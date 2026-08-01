@@ -34,6 +34,22 @@ func SetWorkDir(dir string) error {
 	return nil
 }
 
+// skipDirNames lists directories that walks (Grep, CountLinesByExt,
+// FileTree) skip entirely: VCS/dependency directories and common build
+// output directories, whose contents are either irrelevant or, worse,
+// binary artifacts that would otherwise get miscounted as text.
+var skipDirNames = map[string]bool{
+	"node_modules": true,
+	"vendor":       true,
+	"bin":          true,
+	"dist":         true,
+	"build":        true,
+}
+
+func skipDir(name string) bool {
+	return strings.HasPrefix(name, ".") || skipDirNames[name]
+}
+
 // resolve turns a user-supplied relative path into an absolute path and
 // verifies it stays inside workDir.
 func resolve(path string) (string, error) {
@@ -117,7 +133,7 @@ func FileTree(path string, maxDepth int) (string, error) {
 		filtered := entries[:0]
 		for _, e := range entries {
 			n := e.Name()
-			if strings.HasPrefix(n, ".") || n == "node_modules" || n == "vendor" {
+			if skipDir(n) {
 				continue
 			}
 			filtered = append(filtered, e)
@@ -175,7 +191,7 @@ func Grep(root string, pattern string) ([]GrepMatch, error) {
 		}
 		name := d.Name()
 		if d.IsDir() {
-			if strings.HasPrefix(name, ".") || name == "node_modules" || name == "vendor" {
+			if skipDir(name) {
 				return filepath.SkipDir
 			}
 			return nil
@@ -220,7 +236,7 @@ func CountLinesByExt(root string) (map[string]int, error) {
 		}
 		name := d.Name()
 		if d.IsDir() {
-			if strings.HasPrefix(name, ".") || name == "node_modules" || name == "vendor" {
+			if skipDir(name) {
 				return filepath.SkipDir
 			}
 			return nil
