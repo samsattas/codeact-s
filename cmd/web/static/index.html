@@ -1,328 +1,500 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CodeAct Agent</title>
-<style>
-  :root {
-    color-scheme: light dark;
-    --bg: #0f1115;
-    --panel: #161a21;
-    --panel-2: #1d222b;
-    --border: #2a3140;
-    --text: #e6e9ef;
-    --muted: #8891a3;
-    --accent: #5b8cff;
-    --ok: #3ecf8e;
-    --err: #ff6b6b;
-    --warn: #f5b942;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg: #f5f6f8;
-      --panel: #ffffff;
-      --panel-2: #f0f1f4;
-      --border: #dde1e8;
-      --text: #1b1f27;
-      --muted: #5b6472;
-    }
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
-  header {
-    padding: 20px 28px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  header h1 {
-    font-size: 18px;
-    margin: 0;
-    font-weight: 600;
-  }
-  header h1 .tag {
-    color: var(--accent);
-    font-weight: 700;
-  }
-  #meta {
-    font-size: 12.5px;
-    color: var(--muted);
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  }
-  main {
-    max-width: 920px;
-    margin: 0 auto;
-    padding: 24px 20px 80px;
-  }
-  .composer {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-  }
-  textarea {
-    width: 100%;
-    min-height: 70px;
-    resize: vertical;
-    background: var(--panel-2);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 14px;
-    font-family: inherit;
-  }
-  .examples {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 10px;
-  }
-  .chip {
-    font-size: 12px;
-    color: var(--muted);
-    background: var(--panel-2);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 5px 11px;
-    cursor: pointer;
-  }
-  .chip:hover { color: var(--text); border-color: var(--accent); }
-  .row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 12px;
-  }
-  .hint { font-size: 12px; color: var(--muted); }
-  button#run {
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 9px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  button#run:disabled { opacity: 0.5; cursor: default; }
-  #log {
-    margin-top: 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .attempt {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--panel);
-  }
-  .attempt .hd {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 14px;
-    background: var(--panel-2);
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-  .badge {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 999px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .02em;
-  }
-  .badge.ok { background: rgba(62,207,142,.15); color: var(--ok); }
-  .badge.err { background: rgba(255,107,107,.15); color: var(--err); }
-  .badge.run { background: rgba(91,140,255,.15); color: var(--accent); }
-  pre {
-    margin: 0;
-    padding: 12px 14px;
-    font-size: 12.5px;
-    line-height: 1.5;
-    overflow-x: auto;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    background: var(--panel);
-  }
-  .code { border-bottom: 1px solid var(--border); color: var(--text); }
-  .out { color: var(--muted); }
-  .out.err { color: var(--err); }
-  .final {
-    border-radius: 12px;
-    padding: 14px 16px;
-    font-size: 14px;
-    border: 1px solid var(--border);
-    white-space: pre-wrap;
-  }
-  .final.ok { background: rgba(62,207,142,.08); border-color: var(--ok); }
-  .final.err { background: rgba(255,107,107,.08); border-color: var(--err); }
-  .final .label {
-    display: block;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: .04em;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  .final.ok .label { color: var(--ok); }
-  .final.err .label { color: var(--err); }
-  #empty { color: var(--muted); font-size: 13.5px; margin-top: 22px; }
-</style>
-</head>
-<body>
-<header>
-  <h1><span class="tag">CodeAct</span> Agent</h1>
-  <div id="meta">loading…</div>
-</header>
-<main>
-  <div class="composer">
-    <textarea id="task" placeholder="Describe a task about the sandboxed directory, e.g. 'find all TODO comments and summarize them'"></textarea>
-    <div class="examples" id="examples"></div>
-    <div class="row">
-      <span class="hint">Runs real generated Go code via an embedded interpreter (yaegi). See README for the sandbox model.</span>
-      <button id="run">Run</button>
-    </div>
-  </div>
-
-  <div id="empty">No runs yet. Try an example above.</div>
-  <div id="log"></div>
-</main>
-
-<script>
-const EXAMPLES = [
-  "list the files in this directory and tell me how many .go files there are",
-  "show a tree of this project up to 2 levels deep",
-  "count lines of code by file extension",
-  "find all TODO comments and write a summary to todos.md",
-  "run go vet and tell me if there are any issues",
-];
-
-const examplesEl = document.getElementById('examples');
-const taskEl = document.getElementById('task');
-const runBtn = document.getElementById('run');
-const logEl = document.getElementById('log');
-const emptyEl = document.getElementById('empty');
-const metaEl = document.getElementById('meta');
-
-EXAMPLES.forEach(ex => {
-  const chip = document.createElement('span');
-  chip.className = 'chip';
-  chip.textContent = ex;
-  chip.onclick = () => { taskEl.value = ex; };
-  examplesEl.appendChild(chip);
-});
-
-fetch('/api/info').then(r => r.json()).then(info => {
-  metaEl.textContent = `${info.provider}  ·  sandbox: ${info.workdir}  ·  max-attempts: ${info.maxAttempts}`;
-}).catch(() => { metaEl.textContent = 'could not reach /api/info'; });
-
-function el(tag, cls, text) {
-  const e = document.createElement(tag);
-  if (cls) e.className = cls;
-  if (text !== undefined) e.textContent = text;
-  return e;
-}
-
-function renderAttempt(step) {
-  const card = el('div', 'attempt');
-  const hd = el('div', 'hd');
-  hd.appendChild(el('span', null, `Attempt ${step.attempt}`));
-  const ok = !step.execError && !step.toolError;
-  hd.appendChild(el('span', 'badge ' + (ok ? 'ok' : 'err'), ok ? 'ran' : 'failed'));
-  card.appendChild(hd);
-
-  if (step.code) {
-    card.appendChild(el('pre', 'code', step.code));
-  }
-
-  let outText = '';
-  let isErr = false;
-  if (step.execError) {
-    outText = 'executor error: ' + step.execError;
-    isErr = true;
-  } else if (step.toolError) {
-    outText = (step.stdout ? step.stdout + '\n' : '') + 'Run() returned error: ' + step.toolError;
-    isErr = true;
-  } else if (step.stdout) {
-    outText = step.stdout;
-  }
-  if (outText) {
-    card.appendChild(el('pre', 'out' + (isErr ? ' err' : ''), outText));
-  }
-  return card;
-}
-
-function renderFinal(msg) {
-  const box = el('div', 'final ' + (msg.success ? 'ok' : 'err'));
-  box.appendChild(el('span', 'label', msg.success ? 'Result' : 'Failed'));
-  const body = el('div');
-  body.textContent = msg.success ? msg.finalAnswer : (msg.error || 'exhausted attempts without success');
-  box.appendChild(body);
-  return box;
-}
-
-async function run() {
-  const task = taskEl.value.trim();
-  if (!task) return;
-  runBtn.disabled = true;
-  emptyEl.style.display = 'none';
-
-  const group = el('div');
-  logEl.prepend(group);
-
-  try {
-    const resp = await fetch('/api/run', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ task }),
-    });
-    if (!resp.ok || !resp.body) {
-      group.appendChild(renderFinal({ success: false, error: 'request failed: ' + resp.status }));
-      return;
-    }
-    const reader = resp.body.getReader();
-    const decoder = new TextDecoder();
-    let buf = '';
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      buf += decoder.decode(value, { stream: true });
-      let idx;
-      while ((idx = buf.indexOf('\n')) >= 0) {
-        const line = buf.slice(0, idx).trim();
-        buf = buf.slice(idx + 1);
-        if (!line) continue;
-        const msg = JSON.parse(line);
-        if (msg.type === 'step') group.appendChild(renderAttempt(msg));
-        else if (msg.type === 'done') group.appendChild(renderFinal(msg));
-        else if (msg.type === 'fatal') group.appendChild(renderFinal({ success: false, error: msg.message }));
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CodeAct Agent</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0f1115;
+        --panel: #161a21;
+        --panel-2: #1d222b;
+        --border: #2a3140;
+        --text: #e6e9ef;
+        --muted: #8891a3;
+        --accent: #5b8cff;
+        --ok: #3ecf8e;
+        --err: #ff6b6b;
+        --warn: #f5b942;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+          sans-serif;
       }
-    }
-  } catch (e) {
-    group.appendChild(renderFinal({ success: false, error: String(e) }));
-  } finally {
-    runBtn.disabled = false;
-  }
-}
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f5f6f8;
+          --panel: #ffffff;
+          --panel-2: #f0f1f4;
+          --border: #dde1e8;
+          --text: #1b1f27;
+          --muted: #5b6472;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      header {
+        padding: 20px 28px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      header h1 {
+        font-size: 18px;
+        margin: 0;
+        font-weight: 600;
+      }
+      header h1 .tag {
+        color: var(--accent);
+        font-weight: 700;
+      }
+      #meta {
+        font-size: 12.5px;
+        color: var(--muted);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      main {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 24px 20px 80px;
+      }
+      .composer {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+      }
+      textarea {
+        width: 100%;
+        min-height: 70px;
+        resize: vertical;
+        background: var(--panel-2);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 14px;
+        font-family: inherit;
+      }
+      .examples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+      }
+      .chip {
+        font-size: 12px;
+        color: var(--muted);
+        background: var(--panel-2);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 5px 11px;
+        cursor: pointer;
+      }
+      .chip:hover {
+        color: var(--text);
+        border-color: var(--accent);
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      button#run {
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 9px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button#run:disabled {
+        opacity: 0.7;
+        cursor: default;
+      }
+      .spinner {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 8px;
+        vertical-align: -1px;
+        border: 2px solid rgba(255, 255, 255, 0.45);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      #log {
+        margin-top: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .entry {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--panel);
+        overflow: hidden;
+      }
+      .entry summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: var(--panel-2);
+      }
+      .entry summary::-webkit-details-marker {
+        display: none;
+      }
+      .entry summary .prompt {
+        font-size: 13.5px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .entry summary .meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .entry summary .time {
+        font-size: 11.5px;
+        color: var(--muted);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      .entry .body {
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .attempt {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--panel);
+      }
+      .attempt .hd {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 14px;
+        background: var(--panel-2);
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .badge {
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+      }
+      .badge.ok {
+        background: rgba(62, 207, 142, 0.15);
+        color: var(--ok);
+      }
+      .badge.err {
+        background: rgba(255, 107, 107, 0.15);
+        color: var(--err);
+      }
+      .badge.run {
+        background: rgba(91, 140, 255, 0.15);
+        color: var(--accent);
+      }
+      pre {
+        margin: 0;
+        padding: 12px 14px;
+        font-size: 12.5px;
+        line-height: 1.5;
+        overflow-x: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        background: var(--panel);
+      }
+      .code {
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+      }
+      .out {
+        color: var(--muted);
+      }
+      .out.err {
+        color: var(--err);
+      }
+      .final {
+        border-radius: 12px;
+        padding: 14px 16px;
+        font-size: 14px;
+        border: 1px solid var(--border);
+        white-space: pre-wrap;
+      }
+      .final.ok {
+        background: rgba(62, 207, 142, 0.08);
+        border-color: var(--ok);
+      }
+      .final.err {
+        background: rgba(255, 107, 107, 0.08);
+        border-color: var(--err);
+      }
+      .final .label {
+        display: block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .final.ok .label {
+        color: var(--ok);
+      }
+      .final.err .label {
+        color: var(--err);
+      }
+      #empty {
+        color: var(--muted);
+        font-size: 13.5px;
+        margin-top: 22px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1><span class="tag">CodeAct</span> Agent</h1>
+      <div id="meta">loading…</div>
+    </header>
+    <main>
+      <div class="composer">
+        <textarea
+          id="task"
+          placeholder="Describe a task about the sandboxed directory, e.g. 'find all TODO comments and summarize them'"
+        ></textarea>
+        <div class="examples" id="examples"></div>
+        <div class="row">
+          <span class="hint"
+            >Runs real generated Go code via an embedded interpreter (yaegi).
+            See README for the sandbox model.</span
+          >
+          <button id="run">Run</button>
+        </div>
+      </div>
 
-runBtn.onclick = run;
-taskEl.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) run();
-});
-</script>
-</body>
+      <div id="empty">No runs yet. Try an example above.</div>
+      <div id="log"></div>
+    </main>
+
+    <script>
+      const EXAMPLES = [
+        "list the files in this directory and tell me how many .go files there are",
+        "show a tree of this project up to 2 levels deep",
+        "count lines of code by file extension",
+        "find all TODO comments and write a summary to todos.md",
+        "run go vet and tell me if there are any issues",
+      ];
+
+      const examplesEl = document.getElementById("examples");
+      const taskEl = document.getElementById("task");
+      const runBtn = document.getElementById("run");
+      const logEl = document.getElementById("log");
+      const emptyEl = document.getElementById("empty");
+      const metaEl = document.getElementById("meta");
+
+      EXAMPLES.forEach((ex) => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.textContent = ex;
+        chip.onclick = () => {
+          taskEl.value = ex;
+        };
+        examplesEl.appendChild(chip);
+      });
+
+      fetch("/api/info")
+        .then((r) => r.json())
+        .then((info) => {
+          metaEl.textContent = `${info.provider}  ·  sandbox: ${info.workdir}  ·  max-attempts: ${info.maxAttempts}`;
+        })
+        .catch(() => {
+          metaEl.textContent = "could not reach /api/info";
+        });
+
+      function el(tag, cls, text) {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text !== undefined) e.textContent = text;
+        return e;
+      }
+
+      function renderAttempt(step) {
+        const card = el("div", "attempt");
+        const hd = el("div", "hd");
+        hd.appendChild(el("span", null, `Attempt ${step.attempt}`));
+        const ok = !step.execError && !step.toolError;
+        hd.appendChild(
+          el("span", "badge " + (ok ? "ok" : "err"), ok ? "success" : "failed"),
+        );
+        card.appendChild(hd);
+
+        if (step.code) {
+          card.appendChild(el("pre", "code", step.code));
+        }
+
+        let outText = "";
+        let isErr = false;
+        if (step.execError) {
+          outText = "executor error: " + step.execError;
+          isErr = true;
+        } else if (step.toolError) {
+          outText =
+            (step.stdout ? step.stdout + "\n" : "") +
+            "Run() returned error: " +
+            step.toolError;
+          isErr = true;
+        } else if (step.stdout) {
+          outText = step.stdout;
+        }
+        if (outText) {
+          card.appendChild(el("pre", "out" + (isErr ? " err" : ""), outText));
+        }
+        return card;
+      }
+
+      function renderFinal(msg) {
+        const box = el("div", "final " + (msg.success ? "ok" : "err"));
+        box.appendChild(el("span", "label", msg.success ? "Result" : "Failed"));
+        const body = el("div");
+        body.textContent = msg.success
+          ? msg.finalAnswer
+          : msg.error || "exhausted attempts without success";
+        box.appendChild(body);
+        return box;
+      }
+
+      function setRunning(isRunning) {
+        runBtn.disabled = isRunning;
+        runBtn.innerHTML = isRunning
+          ? '<span class="spinner"></span>Running…'
+          : "Run";
+      }
+
+      // Creates one collapsible history entry (prompt + timestamp + status badge
+      // in the summary, streamed attempts + final result in the body) and
+      // prepends it above all previous entries, so past runs are never replaced.
+      function newHistoryEntry(task) {
+        const details = el("details", "entry");
+        details.open = true;
+
+        const summary = document.createElement("summary");
+        summary.appendChild(el("span", "prompt", task));
+
+        const meta = el("span", "meta");
+        const status = el("span", "badge run", "running");
+        const time = el("span", "time", new Date().toLocaleTimeString());
+        meta.appendChild(status);
+        meta.appendChild(time);
+        summary.appendChild(meta);
+
+        details.appendChild(summary);
+        const body = el("div", "body");
+        details.appendChild(body);
+
+        logEl.prepend(details);
+        return { body, status };
+      }
+
+      async function run() {
+        const task = taskEl.value.trim();
+        if (!task) return;
+        setRunning(true);
+        emptyEl.style.display = "none";
+
+        const { body, status } = newHistoryEntry(task);
+
+        try {
+          const resp = await fetch("/api/run", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ task }),
+          });
+          if (!resp.ok || !resp.body) {
+            status.textContent = "failed";
+            status.className = "badge err";
+            body.appendChild(
+              renderFinal({
+                success: false,
+                error: "request failed: " + resp.status,
+              }),
+            );
+            return;
+          }
+          const reader = resp.body.getReader();
+          const decoder = new TextDecoder();
+          let buf = "";
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            buf += decoder.decode(value, { stream: true });
+            let idx;
+            while ((idx = buf.indexOf("\n")) >= 0) {
+              const line = buf.slice(0, idx).trim();
+              buf = buf.slice(idx + 1);
+              if (!line) continue;
+              const msg = JSON.parse(line);
+              if (msg.type === "step") {
+                body.appendChild(renderAttempt(msg));
+              } else if (msg.type === "done") {
+                body.appendChild(renderFinal(msg));
+                status.textContent = msg.success ? "done" : "failed";
+                status.className = "badge " + (msg.success ? "ok" : "err");
+              } else if (msg.type === "fatal") {
+                body.appendChild(
+                  renderFinal({ success: false, error: msg.message }),
+                );
+                status.textContent = "failed";
+                status.className = "badge err";
+              }
+            }
+          }
+        } catch (e) {
+          status.textContent = "failed";
+          status.className = "badge err";
+          body.appendChild(renderFinal({ success: false, error: String(e) }));
+        } finally {
+          setRunning(false);
+        }
+      }
+
+      runBtn.onclick = run;
+      taskEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) run();
+      });
+    </script>
+  </body>
 </html>
