@@ -4,146 +4,266 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CodeAct Agent</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23C1631A'/%3E%3Ctext x='32' y='42' font-family='monospace' font-size='30' font-weight='700' fill='%23FFF9F0' text-anchor='middle'%3E&gt;_%3C/text%3E%3C/svg%3E"
+    />
     <style>
       :root {
         color-scheme: light dark;
-        --bg: #0f1115;
-        --panel: #161a21;
-        --panel-2: #1d222b;
-        --border: #2a3140;
-        --text: #e6e9ef;
-        --muted: #8891a3;
-        --accent: #5b8cff;
-        --ok: #3ecf8e;
-        --err: #ff6b6b;
-        --warn: #f5b942;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
-          sans-serif;
+        --bg: #f0efea;
+        --surface: #ffffff;
+        --surface-2: #e7e5de;
+        --surface-3: #dedbd1;
+        --border: #dad7ce;
+        --ink: #221f1a;
+        --muted: #726c60;
+        --accent: #c1631a;
+        --accent-ink: #ffffff;
+        --good: #22824f;
+        --good-bg: #e3f1e9;
+        --bad: #b23a2e;
+        --bad-bg: #f8e8e6;
+        --info: #2e6fa3;
+        --info-bg: #e5eef5;
+
+        --font-ui:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+          Arial, sans-serif;
+        --font-mono:
+          ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas,
+          monospace;
       }
-      @media (prefers-color-scheme: light) {
+      @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #f5f6f8;
-          --panel: #ffffff;
-          --panel-2: #f0f1f4;
-          --border: #dde1e8;
-          --text: #1b1f27;
-          --muted: #5b6472;
+          --bg: #17160f;
+          --surface: #1e1c17;
+          --surface-2: #26241d;
+          --surface-3: #322f26;
+          --border: #383429;
+          --ink: #ede9df;
+          --muted: #a49d8b;
+          --accent: #e2914a;
+          --accent-ink: #1a1204;
+          --good: #4bc98a;
+          --good-bg: #1c2f22;
+          --bad: #e2685c;
+          --bad-bg: #34211d;
+          --info: #6badea;
+          --info-bg: #1c2732;
         }
       }
-      * {
-        box-sizing: border-box;
-      }
+
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
       body {
         margin: 0;
         background: var(--bg);
-        color: var(--text);
-        min-height: 100vh;
+        color: var(--ink);
+        font-family: var(--font-ui);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
       }
-      header {
-        padding: 20px 28px;
+      ::selection { background: var(--accent); color: var(--accent-ink); }
+      a { color: var(--accent); }
+      button:focus-visible,
+      summary:focus-visible,
+      a:focus-visible,
+      textarea:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      /* ---------- top bar ---------- */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        backdrop-filter: blur(8px);
         border-bottom: 1px solid var(--border);
+        padding: 16px 24px;
         display: flex;
-        align-items: baseline;
+        align-items: center;
         justify-content: space-between;
+        gap: 16px;
         flex-wrap: wrap;
-        gap: 8px;
       }
-      header h1 {
-        font-size: 18px;
-        margin: 0;
-        font-weight: 600;
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
-      header h1 .tag {
-        color: var(--accent);
+      .brand .mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        font-family: var(--font-mono);
         font-weight: 700;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
       }
-      #meta {
-        font-size: 12.5px;
+      .brand .name {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.01em;
+      }
+      .brand .name small {
+        display: block;
+        font-family: var(--font-ui);
+        font-weight: 400;
+        font-size: 11.5px;
         color: var(--muted);
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0;
+        margin-top: 1px;
       }
-      main {
-        max-width: 920px;
-        margin: 0 auto;
-        padding: 24px 20px 80px;
-      }
-      .composer {
-        background: var(--panel);
+      #status-pill {
+        font-family: var(--font-mono);
+        font-size: 11.5px;
+        color: var(--muted);
+        background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 16px;
+        border-radius: 999px;
+        padding: 6px 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        max-width: 100%;
+        overflow: hidden;
+      }
+      #status-pill .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--good);
+        flex-shrink: 0;
+      }
+      #status-pill span.txt {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      main {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 32px 20px 100px;
+      }
+
+      /* ---------- composer ---------- */
+      .composer {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px;
+      }
+      .field-label {
+        display: block;
+        font-size: 11.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin-bottom: 8px;
       }
       textarea {
         width: 100%;
-        min-height: 70px;
+        min-height: 76px;
         resize: vertical;
-        background: var(--panel-2);
-        color: var(--text);
+        background: var(--surface-2);
+        color: var(--ink);
         border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 10px 12px;
-        font-size: 14px;
+        border-radius: 9px;
+        padding: 11px 13px;
+        font-size: 14.5px;
         font-family: inherit;
+        line-height: 1.5;
       }
+      textarea::placeholder { color: var(--muted); }
       .examples {
         display: flex;
         flex-wrap: wrap;
-        gap: 6px;
-        margin-top: 10px;
+        gap: 7px;
+        margin-top: 12px;
       }
       .chip {
-        font-size: 12px;
+        font-size: 12.5px;
         color: var(--muted);
-        background: var(--panel-2);
+        background: var(--surface-2);
         border: 1px solid var(--border);
         border-radius: 999px;
-        padding: 5px 11px;
+        padding: 6px 12px;
         cursor: pointer;
+        transition: color 0.15s, border-color 0.15s;
       }
-      .chip:hover {
-        color: var(--text);
-        border-color: var(--accent);
-      }
-      .row {
+      .chip:hover { color: var(--ink); border-color: var(--accent); }
+      .composer-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 12px;
+        gap: 14px;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--border);
       }
       .hint {
         font-size: 12px;
         color: var(--muted);
+        margin: 0;
+        max-width: 46ch;
+      }
+      .hint code {
+        font-family: var(--font-mono);
+        background: var(--surface-2);
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+        font-size: 0.92em;
       }
       button#run {
         background: var(--accent);
-        color: white;
+        color: var(--accent-ink);
         border: none;
-        border-radius: 8px;
-        padding: 9px 20px;
+        border-radius: 9px;
+        padding: 10px 22px;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 700;
         cursor: pointer;
+        flex-shrink: 0;
+        transition: opacity 0.15s;
       }
-      button#run:disabled {
-        opacity: 0.7;
-        cursor: default;
-      }
+      button#run:hover:not(:disabled) { opacity: 0.9; }
+      button#run:disabled { opacity: 0.6; cursor: default; }
       .spinner {
         display: inline-block;
         width: 12px;
         height: 12px;
         margin-right: 8px;
         vertical-align: -1px;
-        border: 2px solid rgba(255, 255, 255, 0.45);
-        border-top-color: #fff;
+        border: 2px solid color-mix(in srgb, var(--accent-ink) 45%, transparent);
+        border-top-color: var(--accent-ink);
         border-radius: 50%;
         animation: spin 0.7s linear infinite;
       }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        .spinner { animation-duration: 1.6s; }
+      }
+
+      /* ---------- history ---------- */
+      #empty {
+        color: var(--muted);
+        font-size: 13.5px;
+        margin-top: 28px;
+        text-align: center;
+        padding: 26px;
+        border: 1px dashed var(--border);
+        border-radius: 12px;
       }
       #log {
         margin-top: 22px;
@@ -153,23 +273,21 @@
       }
       .entry {
         border: 1px solid var(--border);
-        border-radius: 12px;
-        background: var(--panel);
+        border-radius: 14px;
+        background: var(--surface);
         overflow: hidden;
       }
       .entry summary {
         list-style: none;
         cursor: pointer;
-        padding: 12px 14px;
+        padding: 13px 16px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 10px;
-        background: var(--panel-2);
+        gap: 12px;
+        background: var(--surface-2);
       }
-      .entry summary::-webkit-details-marker {
-        display: none;
-      }
+      .entry summary::-webkit-details-marker { display: none; }
       .entry summary .prompt {
         font-size: 13.5px;
         font-weight: 600;
@@ -180,16 +298,17 @@
       .entry summary .meta {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 9px;
         flex-shrink: 0;
       }
       .entry summary .time {
         font-size: 11.5px;
         color: var(--muted);
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
       }
       .entry .body {
-        padding: 14px;
+        padding: 16px;
         display: flex;
         flex-direction: column;
         gap: 14px;
@@ -198,117 +317,142 @@
         border: 1px solid var(--border);
         border-radius: 12px;
         overflow: hidden;
-        background: var(--panel);
+        background: var(--surface);
       }
       .attempt .hd {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 8px 14px;
-        background: var(--panel-2);
-        font-size: 12.5px;
-        font-weight: 600;
+        padding: 9px 14px;
+        background: var(--surface-2);
+        font-size: 12px;
+        font-weight: 700;
         color: var(--muted);
       }
-      .badge {
+      .attempt .hd .label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .attempt .hd .lang {
+        font-family: var(--font-mono);
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--surface-3);
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 10.5px;
+      }
+      .copy-btn {
+        font-family: var(--font-ui);
         font-size: 11px;
-        padding: 2px 8px;
+        font-weight: 600;
+        color: var(--muted);
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 3px 9px;
+        cursor: pointer;
+      }
+      .copy-btn:hover { color: var(--ink); border-color: var(--accent); }
+
+      .badge {
+        font-size: 10.5px;
+        padding: 3px 9px;
         border-radius: 999px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.02em;
+        letter-spacing: 0.04em;
       }
-      .badge.ok {
-        background: rgba(62, 207, 142, 0.15);
-        color: var(--ok);
-      }
-      .badge.err {
-        background: rgba(255, 107, 107, 0.15);
-        color: var(--err);
-      }
-      .badge.run {
-        background: rgba(91, 140, 255, 0.15);
-        color: var(--accent);
-      }
+      .badge.ok { background: var(--good-bg); color: var(--good); }
+      .badge.err { background: var(--bad-bg); color: var(--bad); }
+      .badge.run { background: var(--info-bg); color: var(--info); }
+
       pre {
         margin: 0;
-        padding: 12px 14px;
+        padding: 13px 15px;
         font-size: 12.5px;
-        line-height: 1.5;
+        line-height: 1.55;
         overflow-x: auto;
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-        background: var(--panel);
+        font-family: var(--font-mono);
+        background: var(--surface);
       }
-      .code {
-        border-bottom: 1px solid var(--border);
-        color: var(--text);
-      }
-      .out {
-        color: var(--muted);
-      }
-      .out.err {
-        color: var(--err);
-      }
+      .code { border-bottom: 1px solid var(--border); color: var(--ink); }
+      .out { color: var(--muted); }
+      .out.err { color: var(--bad); }
+
       .final {
         border-radius: 12px;
-        padding: 14px 16px;
+        padding: 15px 17px;
         font-size: 14px;
+        font-family: var(--font-mono);
         border: 1px solid var(--border);
         white-space: pre-wrap;
+        line-height: 1.55;
       }
-      .final.ok {
-        background: rgba(62, 207, 142, 0.08);
-        border-color: var(--ok);
-      }
-      .final.err {
-        background: rgba(255, 107, 107, 0.08);
-        border-color: var(--err);
-      }
+      .final.ok { background: var(--good-bg); border-color: var(--good); }
+      .final.err { background: var(--bad-bg); border-color: var(--bad); }
       .final .label {
         display: block;
+        font-family: var(--font-ui);
         font-size: 11px;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.05em;
         font-weight: 700;
-        margin-bottom: 6px;
+        margin-bottom: 7px;
       }
-      .final.ok .label {
-        color: var(--ok);
-      }
-      .final.err .label {
-        color: var(--err);
-      }
-      #empty {
+      .final.ok .label { color: var(--good); }
+      .final.err .label { color: var(--bad); }
+
+      footer.page {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 0 20px 40px;
         color: var(--muted);
-        font-size: 13.5px;
-        margin-top: 22px;
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
       }
+      footer.page a { color: var(--muted); }
+      footer.page a:hover { color: var(--accent); }
     </style>
   </head>
   <body>
-    <header>
-      <h1><span class="tag">CodeAct</span> Agent</h1>
-      <div id="meta">loading…</div>
-    </header>
+    <div class="topbar">
+      <div class="brand">
+        <span class="mark">&gt;_</span>
+        <span class="name">CodeAct Agent<small>code-as-action, running live</small></span>
+      </div>
+      <div id="status-pill"><span class="dot"></span><span class="txt">connecting…</span></div>
+    </div>
+
     <main>
       <div class="composer">
+        <label class="field-label" for="task">Task</label>
         <textarea
           id="task"
           placeholder="Describe a task about the sandboxed directory, e.g. 'find all TODO comments and summarize them'"
         ></textarea>
         <div class="examples" id="examples"></div>
-        <div class="row">
-          <span class="hint"
-            >Runs real generated Go code via an embedded interpreter (yaegi).
-            See README for the sandbox model.</span
-          >
+        <div class="composer-footer">
+          <p class="hint">
+            Generates real Go code and runs it in an embedded interpreter
+            (<code>yaegi</code>) against a sandboxed API — no shell, no raw
+            filesystem access.
+          </p>
           <button id="run">Run</button>
         </div>
       </div>
 
-      <div id="empty">No runs yet. Try an example above.</div>
+      <div id="empty">No runs yet — try one of the examples above.</div>
       <div id="log"></div>
     </main>
+
+    <footer class="page">
+      <span>CodeAct Agent — a proof-of-concept code-as-action agent in Go.</span>
+    </footer>
 
     <script>
       const EXAMPLES = [
@@ -324,7 +468,9 @@
       const runBtn = document.getElementById("run");
       const logEl = document.getElementById("log");
       const emptyEl = document.getElementById("empty");
-      const metaEl = document.getElementById("meta");
+      const statusPill = document.getElementById("status-pill");
+      const statusTxt = statusPill.querySelector(".txt");
+      const statusDot = statusPill.querySelector(".dot");
 
       EXAMPLES.forEach((ex) => {
         const chip = document.createElement("span");
@@ -332,6 +478,7 @@
         chip.textContent = ex;
         chip.onclick = () => {
           taskEl.value = ex;
+          taskEl.focus();
         };
         examplesEl.appendChild(chip);
       });
@@ -339,10 +486,11 @@
       fetch("/api/info")
         .then((r) => r.json())
         .then((info) => {
-          metaEl.textContent = `${info.provider}  ·  sandbox: ${info.workdir}  ·  max-attempts: ${info.maxAttempts}`;
+          statusTxt.textContent = `${info.provider}  ·  sandbox: ${info.workdir}  ·  max-attempts: ${info.maxAttempts}`;
         })
         .catch(() => {
-          metaEl.textContent = "could not reach /api/info";
+          statusTxt.textContent = "could not reach /api/info";
+          statusDot.style.background = "var(--bad)";
         });
 
       function el(tag, cls, text) {
@@ -355,7 +503,10 @@
       function renderAttempt(step) {
         const card = el("div", "attempt");
         const hd = el("div", "hd");
-        hd.appendChild(el("span", null, `Attempt ${step.attempt}`));
+        const label = el("span", "label");
+        label.appendChild(document.createTextNode(`Attempt ${step.attempt}`));
+        if (step.code) label.appendChild(el("span", "lang", "go"));
+        hd.appendChild(label);
         const ok = !step.execError && !step.toolError;
         hd.appendChild(
           el("span", "badge " + (ok ? "ok" : "err"), ok ? "success" : "failed"),
@@ -363,7 +514,8 @@
         card.appendChild(hd);
 
         if (step.code) {
-          card.appendChild(el("pre", "code", step.code));
+          const codePre = el("pre", "code", step.code);
+          card.appendChild(codePre);
         }
 
         let outText = "";
