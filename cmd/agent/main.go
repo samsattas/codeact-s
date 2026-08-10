@@ -26,7 +26,8 @@ func main() {
 	)
 	flag.Parse()
 
-	if err := tools.SetWorkDir(*workDir); err != nil {
+	sandbox, err := tools.NewSandbox(*workDir)
+	if err != nil {
 		fatal("invalid -workdir: %v", err)
 	}
 
@@ -55,7 +56,7 @@ func main() {
 		}
 	}
 
-	ag := agent.New(provider, exec, *maxAttempts, onStep)
+	ag := agent.New(provider, exec, sandbox, *maxAttempts, onStep)
 
 	tasks := flag.Args()
 	if len(tasks) > 0 {

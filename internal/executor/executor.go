@@ -38,15 +38,14 @@ type Result struct {
 // production system would run untrusted code in a subprocess instead.
 const timeout = 10 * time.Second
 
-// Executor evaluates generated code against the fixed tools API.
-type Executor struct {
-	exports interp.Exports
-}
+// Executor evaluates generated code against the tools API. It holds no
+// per-directory state, so a single Executor can safely run tasks against
+// different sandboxes (even concurrently, one goroutine per call).
+type Executor struct{}
 
-// New builds an Executor. It must be called after tools.SetWorkDir so the
-// tools package is sandboxed to the intended directory before any code runs.
+// New builds an Executor.
 func New() *Executor {
-	return &Executor{exports: toolExports()}
+	return &Executor{}
 }
 
 // Run compiles and executes source, which must be a self-contained Go file
@@ -55,8 +54,9 @@ func New() *Executor {
 //	func Run() (string, error)
 //
 // as its entry point. Run() is invoked automatically after the source is
-// loaded, and its return values are captured in Result.
-func (e *Executor) Run(ctx context.Context, source string) (Result, error) {
+// loaded, and its return values are captured in Result. sandbox scopes every
+// tools.* call the generated code makes to sandbox's root for this call only.
+func (e *Executor) Run(ctx context.Context, sandbox *tools.Sandbox, source string) (Result, error) {
 	start := time.Now()
 
 	var stdout bytes.Buffer
@@ -64,7 +64,7 @@ func (e *Executor) Run(ctx context.Context, source string) (Result, error) {
 	if err := i.Use(allowedStdlib()); err != nil {
 		return Result{}, fmt.Errorf("internal: loading stdlib symbols: %w", err)
 	}
-	if err := i.Use(e.exports); err != nil {
+	if err := i.Use(toolExports(sandbox)); err != nil {
 		return Result{}, fmt.Errorf("internal: loading tools symbols: %w", err)
 	}
 
@@ -161,17 +161,18 @@ func allowedStdlib() interp.Exports {
 }
 
 // toolExports builds the yaegi symbol table for the "tools" package by
-// reflecting over the exported functions in internal/tools.
-func toolExports() interp.Exports {
+// reflecting over sandbox's bound methods, so generated code calling
+// tools.ReadFile(...) etc. is transparently scoped to that sandbox's root.
+func toolExports(sandbox *tools.Sandbox) interp.Exports {
 	return interp.Exports{
 		"tools/tools": {
-			"ReadFile":        reflect.ValueOf(tools.ReadFile),
-			"WriteFile":       reflect.ValueOf(tools.WriteFile),
-			"ListDir":         reflect.ValueOf(tools.ListDir),
-			"FileTree":        reflect.ValueOf(tools.FileTree),
-			"Grep":            reflect.ValueOf(tools.Grep),
-			"CountLinesByExt": reflect.ValueOf(tools.CountLinesByExt),
-			"RunCommand":      reflect.ValueOf(tools.RunCommand),
+			"ReadFile":        reflect.ValueOf(sandbox.ReadFile),
+			"WriteFile":       reflect.ValueOf(sandbox.WriteFile),
+			"ListDir":         reflect.ValueOf(sandbox.ListDir),
+			"FileTree":        reflect.ValueOf(sandbox.FileTree),
+			"Grep":            reflect.ValueOf(sandbox.Grep),
+			"CountLinesByExt": reflect.ValueOf(sandbox.CountLinesByExt),
+			"RunCommand":      reflect.ValueOf(sandbox.RunCommand),
 		},
 	}
 }

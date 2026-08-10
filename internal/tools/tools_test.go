@@ -6,21 +6,22 @@ import (
 	"testing"
 )
 
-func setup(t *testing.T) string {
+func setup(t *testing.T) (*Sandbox, string) {
 	t.Helper()
 	dir := t.TempDir()
-	if err := SetWorkDir(dir); err != nil {
-		t.Fatalf("SetWorkDir: %v", err)
+	sb, err := NewSandbox(dir)
+	if err != nil {
+		t.Fatalf("NewSandbox: %v", err)
 	}
-	return dir
+	return sb, dir
 }
 
 func TestReadWriteFile(t *testing.T) {
-	setup(t)
-	if err := WriteFile("sub/dir/hello.txt", "hi"); err != nil {
+	sb, _ := setup(t)
+	if err := sb.WriteFile("sub/dir/hello.txt", "hi"); err != nil {
 		t.Fatalf("WriteFile: %v", err)
 	}
-	got, err := ReadFile("sub/dir/hello.txt")
+	got, err := sb.ReadFile("sub/dir/hello.txt")
 	if err != nil {
 		t.Fatalf("ReadFile: %v", err)
 	}
@@ -30,24 +31,24 @@ func TestReadWriteFile(t *testing.T) {
 }
 
 func TestResolveBlocksEscape(t *testing.T) {
-	setup(t)
-	if _, err := ReadFile("../outside.txt"); err == nil {
+	sb, _ := setup(t)
+	if _, err := sb.ReadFile("../outside.txt"); err == nil {
 		t.Fatalf("expected error escaping sandbox")
 	}
-	if _, err := ReadFile("/etc/passwd"); err == nil {
+	if _, err := sb.ReadFile("/etc/passwd"); err == nil {
 		t.Fatalf("expected error for absolute path outside sandbox")
 	}
 }
 
 func TestListDir(t *testing.T) {
-	dir := setup(t)
+	sb, dir := setup(t)
 	if err := os.WriteFile(filepath.Join(dir, "a.txt"), []byte("x"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.Mkdir(filepath.Join(dir, "sub"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	entries, err := ListDir(".")
+	entries, err := sb.ListDir(".")
 	if err != nil {
 		t.Fatalf("ListDir: %v", err)
 	}
@@ -63,11 +64,11 @@ func TestListDir(t *testing.T) {
 }
 
 func TestGrep(t *testing.T) {
-	dir := setup(t)
+	sb, dir := setup(t)
 	if err := os.WriteFile(filepath.Join(dir, "code.go"), []byte("package main\n// TODO: fix this\nfunc main() {}\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	matches, err := Grep(".", "TODO")
+	matches, err := sb.Grep(".", "TODO")
 	if err != nil {
 		t.Fatalf("Grep: %v", err)
 	}
@@ -77,14 +78,14 @@ func TestGrep(t *testing.T) {
 }
 
 func TestCountLinesByExt(t *testing.T) {
-	dir := setup(t)
+	sb, dir := setup(t)
 	if err := os.WriteFile(filepath.Join(dir, "a.go"), []byte("l1\nl2\nl3\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.WriteFile(filepath.Join(dir, "b.go"), []byte("l1\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	counts, err := CountLinesByExt(".")
+	counts, err := sb.CountLinesByExt(".")
 	if err != nil {
 		t.Fatalf("CountLinesByExt: %v", err)
 	}
@@ -94,7 +95,7 @@ func TestCountLinesByExt(t *testing.T) {
 }
 
 func TestCountLinesByExtSkipsBuildOutputDirs(t *testing.T) {
-	dir := setup(t)
+	sb, dir := setup(t)
 	if err := os.WriteFile(filepath.Join(dir, "a.go"), []byte("l1\nl2\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -111,7 +112,7 @@ func TestCountLinesByExtSkipsBuildOutputDirs(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(dir, "bin", "agent"), fakeBinary, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	counts, err := CountLinesByExt(".")
+	counts, err := sb.CountLinesByExt(".")
 	if err != nil {
 		t.Fatalf("CountLinesByExt: %v", err)
 	}
@@ -124,11 +125,11 @@ func TestCountLinesByExtSkipsBuildOutputDirs(t *testing.T) {
 }
 
 func TestRunCommandAllowlist(t *testing.T) {
-	setup(t)
-	if _, err := RunCommand("rm", "-rf", "/"); err == nil {
+	sb, _ := setup(t)
+	if _, err := sb.RunCommand("rm", "-rf", "/"); err == nil {
 		t.Fatalf("expected disallowed command to be rejected")
 	}
-	out, err := RunCommand("echo", "hello")
+	out, err := sb.RunCommand("echo", "hello")
 	if err != nil {
 		t.Fatalf("RunCommand echo: %v", err)
 	}
@@ -138,18 +139,46 @@ func TestRunCommandAllowlist(t *testing.T) {
 }
 
 func TestFileTree(t *testing.T) {
-	dir := setup(t)
+	sb, dir := setup(t)
 	if err := os.MkdirAll(filepath.Join(dir, "pkg"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.WriteFile(filepath.Join(dir, "pkg", "f.go"), []byte("x"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	tree, err := FileTree(".", 2)
+	tree, err := sb.FileTree(".", 2)
 	if err != nil {
 		t.Fatalf("FileTree: %v", err)
 	}
 	if tree == "" {
 		t.Fatalf("expected non-empty tree")
+	}
+}
+
+func TestNewSandboxRejectsNonDirectory(t *testing.T) {
+	dir := t.TempDir()
+	file := filepath.Join(dir, "not-a-dir.txt")
+	if err := os.WriteFile(file, []byte("x"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := NewSandbox(file); err == nil {
+		t.Fatalf("expected NewSandbox to reject a non-directory path")
+	}
+}
+
+func TestNewSandboxRejectsMissingDirectory(t *testing.T) {
+	if _, err := NewSandbox(filepath.Join(t.TempDir(), "does-not-exist")); err == nil {
+		t.Fatalf("expected NewSandbox to reject a missing directory")
+	}
+}
+
+func TestSandboxesAreIndependent(t *testing.T) {
+	sbA, _ := setup(t)
+	sbB, _ := setup(t)
+	if err := sbA.WriteFile("only-in-a.txt", "a"); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := sbB.ReadFile("only-in-a.txt"); err == nil {
+		t.Fatalf("expected sandbox B to not see files written to sandbox A's root")
 	}
 }

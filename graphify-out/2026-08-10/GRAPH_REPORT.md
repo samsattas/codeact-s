@@ -1,12 +1,12 @@
 # Graph Report - CodeAct-Style  (2026-08-10)
 
 ## Corpus Check
-- 122 files · ~109,306 words
+- 122 files · ~108,158 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2196 nodes · 2713 edges · 144 communities (119 shown, 25 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 73 edges (avg confidence: 0.67)
+- 2192 nodes · 2702 edges · 144 communities (119 shown, 25 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 72 edges (avg confidence: 0.67)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
@@ -49,7 +49,7 @@
 - .generate_config_string
 - inject-brand-context.cjs
 - embed-tokens.cjs
-- duration
+- primitive
 - patch
 - OllamaProvider
 - ._base_config
@@ -65,7 +65,7 @@
 - Typography Specifications
 - CodeAct Agent
 - _select_palette_for_mode
-- sm
+- shadow
 - Logo Usage Rules
 - Component Specifications
 - shadcn/ui Accessibility Patterns
@@ -73,7 +73,7 @@
 - Asset Approval Checklist
 - Logo AI Prompt Engineering
 - xl
-- anthropic.go
+- md
 - none
 - validate_data.py
 - test_sync_brand_to_tokens.py
@@ -130,7 +130,7 @@
 - Slides Reference
 - HTML Slide Template
 - HTML Slide Template
-- default
+- detect_domain
 - How to Use This Skill
 - graphify reference: query, path, explain
 - Slides
@@ -202,8 +202,8 @@ Cohesion: 0.05
 Nodes (62): Agent, fakeProvider, Outcome, Step, fatal(), main(), repl(), runTask() (+54 more)
 
 ### Community 3 - "BM25"
-Cohesion: 0.10
-Nodes (21): BM25, _domain_keywords(), _get_bm25(), _load_csv(), _load_product_keywords(), _normalize(), Apply synonym substitution before tokenizing., BM25 ranking algorithm for text search (+13 more)
+Cohesion: 0.11
+Nodes (19): BM25, _domain_keywords(), _get_bm25(), _load_csv(), _load_product_keywords(), _normalize(), Apply synonym substitution before tokenizing., BM25 ranking algorithm for text search (+11 more)
 
 ### Community 4 - "slide_search_core.py"
 Cohesion: 0.09
@@ -234,8 +234,8 @@ Cohesion: 0.05
 Nodes (43): Arbitrary Values, Aspect Ratio, Background Colors, Border Color, Border Radius, Border Style, Border Width, Borders (+35 more)
 
 ### Community 11 - "newTestServer"
-Cohesion: 0.28
-Nodes (13): Context, T, newTestServer(), TestHandleBrowseListsSubdirectoriesOnly(), TestHandleBrowseRejectsMissingPath(), TestHandleInfo(), TestHandleRunRejectsInvalidDir(), TestHandleRunRejectsMissingTask() (+5 more)
+Cohesion: 0.30
+Nodes (11): Context, T, newTestServer(), TestHandleInfo(), TestHandleRunRejectsInvalidDir(), TestHandleRunRejectsMissingTask(), TestHandleRunRejectsNonPost(), TestHandleRunStreamsFailureAfterAttempts() (+3 more)
 
 ### Community 12 - "generate-slide.py"
 Cohesion: 0.15
@@ -286,8 +286,8 @@ Cohesion: 0.25
 Nodes (13): checkManifest(), formatBytes(), formatOutput(), fs, main(), parseFilename(), path, RULES (+5 more)
 
 ### Community 24 - "design_system.py"
-Cohesion: 0.09
-Nodes (27): ansi_ljust(), _detect_page_type(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system(), _generate_intelligent_overrides() (+19 more)
+Cohesion: 0.11
+Nodes (25): ansi_ljust(), _detect_page_type(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system(), _generate_intelligent_overrides() (+17 more)
 
 ### Community 25 - "button"
 Cohesion: 0.06
@@ -302,8 +302,8 @@ Cohesion: 0.14
 Nodes (8): Handle shadcn/ui component installation., ShadcnInstaller, Test adding components that are already installed., Test initialization with default project root., Test initialization with custom project root., Test checking for non-existent shadcn config., Test getting installed components when none exist., Test getting installed components when files exist.
 
 ### Community 28 - "diagnosisHint"
-Cohesion: 0.31
-Nodes (11): diagnosisHint(), fenced(), retryPrompt(), T, TestDiagnosisHintExitStatus(), TestDiagnosisHintUndefined(), TestDiagnosisHintUnknownErrorIsEmpty(), TestDiagnosisHintUnusedImport() (+3 more)
+Cohesion: 0.35
+Nodes (10): diagnosisHint(), fenced(), retryPrompt(), T, TestDiagnosisHintExitStatus(), TestDiagnosisHintUndefined(), TestDiagnosisHintUnknownErrorIsEmpty(), TestDiagnosisHintUnusedImport() (+2 more)
 
 ### Community 29 - "validate-tokens.cjs"
 Cohesion: 0.24
@@ -325,17 +325,17 @@ Nodes (10): extractColorsFromTable(), extractCoreAttributes(), extractHexColors(
 Cohesion: 0.18
 Nodes (8): args, fs, minimal, MINIMAL_TOKENS, path, projectRoot, tokensPath, wrapStyle
 
-### Community 34 - "duration"
-Cohesion: 0.20
-Nodes (10): fast, normal, slow, $type, $value, $type, $value, duration (+2 more)
+### Community 34 - "primitive"
+Cohesion: 0.18
+Nodes (11): fast, normal, slow, $type, $value, $type, $value, primitive (+3 more)
 
 ### Community 35 - "patch"
 Cohesion: 0.18
 Nodes (6): Test adding components with overwrite flag., Test successful component addition., Test component addition with subprocess error., Test component addition when npx is not found., Test successful addition of all components., patch
 
 ### Community 36 - "OllamaProvider"
-Cohesion: 0.25
-Nodes (7): Client, Context, NewOllamaProvider(), ollamaChatRequest, ollamaChatResponse, ollamaMessage, OllamaProvider
+Cohesion: 0.12
+Nodes (14): Client, Context, NewAnthropicProvider(), Client, Context, NewOllamaProvider(), anthropicMessage, AnthropicProvider (+6 more)
 
 ### Community 37 - "._base_config"
 Cohesion: 0.22
@@ -374,8 +374,8 @@ Cohesion: 0.06
 Nodes (32): 1. Mobile-First Design, 2. Consistent Breakpoint Usage, 3. Test at Breakpoint Boundaries, 4. Use Container for Content Width, 5. Progressive Enhancement, 6. Avoid Too Many Breakpoints, Best Practices, Breakpoint System (+24 more)
 
 ### Community 46 - "radius"
-Cohesion: 0.24
-Nodes (10): $type, $value, $type, $value, primitive, radius, shadow, full (+2 more)
+Cohesion: 0.29
+Nodes (8): $type, $value, $type, $value, radius, default, full, default
 
 ### Community 47 - "Typography Specifications"
 Cohesion: 0.06
@@ -389,9 +389,9 @@ Nodes (25): Architecture, Commands, graphify, Architecture, Design choices, Know
 Cohesion: 0.43
 Nodes (3): Pick the highest-ranked palette matching the resolved mode. Only the dark case…, _select_palette_for_mode(), TestPaletteSelection
 
-### Community 50 - "sm"
-Cohesion: 0.60
-Nodes (5): sm, sm, sm, $type, $value
+### Community 50 - "shadow"
+Cohesion: 0.47
+Nodes (6): sm, shadow, sm, sm, $type, $value
 
 ### Community 51 - "Logo Usage Rules"
 Cohesion: 0.07
@@ -421,9 +421,9 @@ Nodes (25): Common Pitfalls, Core Prompt Structure, Detailed Brief, Eco/Sustaina
 Cohesion: 0.67
 Nodes (4): xl, xl, $type, $value
 
-### Community 58 - "anthropic.go"
-Cohesion: 0.24
-Nodes (7): Client, Context, NewAnthropicProvider(), anthropicMessage, AnthropicProvider, anthropicRequest, anthropicResponse
+### Community 58 - "md"
+Cohesion: 0.67
+Nodes (4): $type, $value, md, md
 
 ### Community 59 - "none"
 Cohesion: 0.67
@@ -550,8 +550,8 @@ Cohesion: 0.14
 Nodes (13): Card Styles, Component Variants, CSS Structures, Feature Grid (3 columns), Layout Decision Flow, Layout Patterns, Layout Selection by Use Case, Metric Styles (+5 more)
 
 ### Community 97 - "search"
-Cohesion: 0.20
-Nodes (7): detect_domain(), Auto-detect the most relevant domain from query. Matches are weighted by…, Main search function with auto-domain detection, search(), Known query -> expected top-domain sanity checks (not exact-row pinning, since…, TestDomainDetection, TestSearchDomains
+Cohesion: 0.19
+Nodes (8): Main search function with auto-domain detection, Search stack-specific guidelines, search(), search_stack(), format_output(), Format results for Claude consumption (token-optimized), Known query -> expected top-domain sanity checks (not exact-row pinning, since…, TestSearchDomains
 
 ### Community 98 - "brand/references/update.md"
 Cohesion: 0.15
@@ -621,9 +621,9 @@ Nodes (6): Animation Classes, Background Images, Base Structure, Chart.js Integr
 Cohesion: 0.29
 Nodes (6): Animation Classes, Background Images, Base Structure, Chart.js Integration, CSS Variables Reference, HTML Slide Template
 
-### Community 115 - "default"
-Cohesion: 0.67
-Nodes (4): $type, $value, default, default
+### Community 115 - "detect_domain"
+Cohesion: 0.43
+Nodes (3): detect_domain(), Auto-detect the most relevant domain from query. Matches are weighted by…, TestDomainDetection
 
 ### Community 116 - "How to Use This Skill"
 Cohesion: 0.29
@@ -666,14 +666,14 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ## Knowledge Gaps
-- **992 isolated node(s):** `fs`, `path`, `fs`, `path`, `fs` (+987 more)
+- **991 isolated node(s):** `fs`, `path`, `fs`, `path`, `fs` (+986 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **25 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `primitive` connect `radius` to `gray`, `duration`, `color`, `spacing`, `fontSize`?**
+- **Why does `primitive` connect `primitive` to `gray`, `color`, `spacing`, `radius`, `fontSize`, `shadow`?**
   _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **Why does `color` connect `color` to `button`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
@@ -682,7 +682,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 10 inferred relationships involving `DesignSystemGenerator` (e.g. with `TestDomainDetection` and `TestPersistence`) actually correct?**
   _`DesignSystemGenerator` has 10 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `fs`, `path`, `fs` to the rest of the system?**
-  _992 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _991 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `gray` be split into smaller, more focused modules?**
   _Cohesion score 0.05370101596516691 - nodes in this community are weakly interconnected._
 - **Should `BM25` be split into smaller, more focused modules?**

@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -35,14 +37,15 @@ func (f *fakeProvider) Generate(_ context.Context, _ string, _ string) (string, 
 
 func newTestServer(t *testing.T, responses []string) *server {
 	t.Helper()
-	if err := tools.SetWorkDir(t.TempDir()); err != nil {
-		t.Fatalf("SetWorkDir: %v", err)
+	sb, err := tools.NewSandbox(t.TempDir())
+	if err != nil {
+		t.Fatalf("NewSandbox: %v", err)
 	}
 	return &server{
 		provider:    &fakeProvider{responses: responses},
 		exec:        executor.New(),
 		maxAttempts: 3,
-		workDir:     tools.WorkDir(),
+		defaultDir:  sb.Root(),
 	}
 }
 
@@ -93,6 +96,19 @@ func TestHandleRunRejectsMissingTask(t *testing.T) {
 	}
 }
 
+func TestHandleRunRejectsInvalidDir(t *testing.T) {
+	srv := newTestServer(t, nil)
+
+	body, _ := json.Marshal(map[string]string{"task": "do something", "dir": filepath.Join(t.TempDir(), "does-not-exist")})
+	req := httptest.NewRequest(http.MethodPost, "/api/run", bytes.NewReader(body))
+	rec := httptest.NewRecorder()
+	srv.handleRun(rec, req)
+
+	if rec.Code != http.StatusBadRequest {
+		t.Fatalf("status = %d, want 400, body: %s", rec.Code, rec.Body.String())
+	}
+}
+
 const validRunSnippet = `package main
 
 import "tools"
@@ -121,12 +137,20 @@ func TestHandleRunStreamsSuccess(t *testing.T) {
 	}
 
 	lines := strings.Split(strings.TrimSpace(rec.Body.String()), "\n")
-	if len(lines) < 2 {
-		t.Fatalf("expected at least a step and a done message, got %d lines: %q", len(lines), rec.Body.String())
+	if len(lines) < 3 {
+		t.Fatalf("expected a start, step, and done message, got %d lines: %q", len(lines), rec.Body.String())
+	}
+
+	var start streamMessage
+	if err := json.Unmarshal([]byte(lines[0]), &start); err != nil {
+		t.Fatalf("decoding start message: %v", err)
+	}
+	if start.Type != "start" || start.Dir != srv.defaultDir {
+		t.Fatalf("unexpected start message: %+v (want dir %q)", start, srv.defaultDir)
 	}
 
 	var step streamMessage
-	if err := json.Unmarshal([]byte(lines[0]), &step); err != nil {
+	if err := json.Unmarshal([]byte(lines[1]), &step); err != nil {
 		t.Fatalf("decoding step message: %v", err)
 	}
 	if step.Type != "step" || step.Attempt != 1 || step.Code == "" {
@@ -140,6 +164,94 @@ func TestHandleRunStreamsSuccess(t *testing.T) {
 	}
 	if done.Type != "done" || !done.Success || done.FinalAnswer != "wrote note.txt" {
 		t.Fatalf("unexpected done message: %+v", done)
+	}
+}
+
+func TestHandleRunUsesRequestDirOverDefault(t *testing.T) {
+	srv := newTestServer(t, []string{"```go\n" + validRunSnippet + "```"})
+	customDir := t.TempDir()
+
+	body, _ := json.Marshal(map[string]string{"task": "write a note", "dir": customDir})
+	req := httptest.NewRequest(http.MethodPost, "/api/run", bytes.NewReader(body))
+	rec := httptest.NewRecorder()
+	srv.handleRun(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status = %d, want 200, body: %s", rec.Code, rec.Body.String())
+	}
+
+	lines := strings.Split(strings.TrimSpace(rec.Body.String()), "\n")
+	var start streamMessage
+	if err := json.Unmarshal([]byte(lines[0]), &start); err != nil {
+		t.Fatalf("decoding start message: %v", err)
+	}
+	if start.Dir != customDir {
+		t.Fatalf("start.Dir = %q, want %q", start.Dir, customDir)
+	}
+
+	if _, err := os.Stat(filepath.Join(customDir, "note.txt")); err != nil {
+		t.Fatalf("expected note.txt to be written under the request's dir, not the server default: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(srv.defaultDir, "note.txt")); err == nil {
+		t.Fatalf("note.txt was written under the server's default dir instead of the request's dir")
+	}
+}
+
+func TestHandleBrowseListsSubdirectoriesOnly(t *testing.T) {
+	srv := newTestServer(t, nil)
+	root := srv.defaultDir
+
+	if err := os.Mkdir(filepath.Join(root, "sub-b"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Mkdir(filepath.Join(root, "sub-a"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Mkdir(filepath.Join(root, ".hidden"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "file.txt"), []byte("x"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	req := httptest.NewRequest(http.MethodGet, "/api/browse?path="+root, nil)
+	rec := httptest.NewRecorder()
+	srv.handleBrowse(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status = %d, want 200, body: %s", rec.Code, rec.Body.String())
+	}
+	var resp struct {
+		Path    string        `json:"path"`
+		Parent  string        `json:"parent"`
+		Entries []browseEntry `json:"entries"`
+	}
+	if err := json.NewDecoder(rec.Body).Decode(&resp); err != nil {
+		t.Fatalf("decoding response: %v", err)
+	}
+	if resp.Path != root {
+		t.Fatalf("path = %q, want %q", resp.Path, root)
+	}
+	if resp.Parent != filepath.Dir(root) {
+		t.Fatalf("parent = %q, want %q", resp.Parent, filepath.Dir(root))
+	}
+	if len(resp.Entries) != 2 || resp.Entries[0].Name != "sub-a" || resp.Entries[1].Name != "sub-b" {
+		t.Fatalf("unexpected entries (want only sub-a, sub-b, sorted, no dotfiles/files): %+v", resp.Entries)
+	}
+	if resp.Entries[0].Path != filepath.Join(root, "sub-a") {
+		t.Fatalf("entry path = %q, want an absolute child path", resp.Entries[0].Path)
+	}
+}
+
+func TestHandleBrowseRejectsMissingPath(t *testing.T) {
+	srv := newTestServer(t, nil)
+
+	req := httptest.NewRequest(http.MethodGet, "/api/browse?path="+filepath.Join(t.TempDir(), "nope"), nil)
+	rec := httptest.NewRecorder()
+	srv.handleBrowse(rec, req)
+
+	if rec.Code != http.StatusBadRequest {
+		t.Fatalf("status = %d, want 400", rec.Code)
 	}
 }
 

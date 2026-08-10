@@ -30,9 +30,12 @@ task argument for a REPL. Flags: `-workdir` (sandbox root, default `.`),
 `-max-attempts` (default 3), `-v` (print each attempt's code/output).
 
 Run the web UI: `./bin/web -workdir ./some/project -addr :8080`, then open
-`http://localhost:8080`. `/api/run` streams NDJSON (one `{"type":"step",...}`
-line per attempt, then a final `{"type":"done",...}`); `/api/info` reports the
-active provider, sandbox root, and max attempts.
+`http://localhost:8080`. `-workdir` is just the default: the page has a
+**Dir** field, so each `/api/run` request can point at its own directory
+(`{"task", "dir", "maxAttempts"}` in the body). `/api/run` streams NDJSON —
+a `{"type":"start","dir":...}` with the resolved sandbox, one
+`{"type":"step",...}` per attempt, then a final `{"type":"done",...}`;
+`/api/info` reports the active provider, the default dir, and max attempts.
 
 Model backend: Ollama by default (`ollama serve` + `ollama pull
 qwen2.5-coder:7b`, no key needed) — set `ANTHROPIC_API_KEY` to switch to
@@ -69,9 +72,11 @@ render the result differently (stdout vs. a streamed NDJSON page):
 - **`internal/tools`** is the sandboxed API generated code is allowed to
   call: read/write/list files, a directory tree renderer, grep, a
   line-counter, and an allowlisted command runner (`go`, `git`, `ls`, `wc`,
-  `find`, `cat`, `echo`, `gofmt`, never through a shell). Every path is
-  resolved against a single sandbox root (`tools.SetWorkDir`) and rejected if
-  it would escape that root.
+  `find`, `cat`, `echo`, `gofmt`, never through a shell) — as methods on a
+  `Sandbox` rooted at one directory (`tools.NewSandbox(dir)`), not global
+  state, so different runs (e.g. concurrent web requests) can use different
+  roots safely. Every path is resolved against that instance's root and
+  rejected if it would escape it.
 - **`internal/llm`** is a one-method `Provider` interface
   (`Generate(ctx, systemPrompt, userPrompt) (string, error)`); `FromEnv()`
   picks Anthropic or Ollama.
@@ -80,8 +85,8 @@ render the result differently (stdout vs. a streamed NDJSON page):
 `internal/executor` only registers an allowlisted stdlib subset with the
 interpreter, so `import "os"`/`io`/`os/exec`/`net/http`/`syscall` fails to
 compile inside the interpreter regardless of what the model tries; separately,
-every `internal/tools` function resolves its path argument against the
-sandbox root and rejects anything that would resolve outside it. See
+every `tools.Sandbox` method resolves its path argument against that
+instance's root and rejects anything that would resolve outside it. See
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full design rationale
 (why an embedded interpreter over a subprocess, known limitations like no
 true kill-on-timeout for runaway generated code) and

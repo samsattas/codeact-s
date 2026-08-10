@@ -82,6 +82,13 @@ Open `http://localhost:8080`, type a task (or click an example), and hit
 Run. It's a single self-contained Go binary — the page is embedded in the
 binary at build time, no separate asset server or JS build step.
 
+`-workdir` only sets the *default* directory. The page has its own
+**Dir** field, pre-filled with that default but editable per run, so a
+single running server can point different runs at different directories —
+it's no longer tied to whichever one it started with. There's no
+authentication and no allowlist of directories, so treat the web UI as a
+single-user local tool, not something to expose beyond `localhost`.
+
 ## Testing
 
 ```bash

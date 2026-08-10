@@ -54,20 +54,24 @@ result differently (stdout vs. a browser page).
 
 - **`internal/tools`** implements file read/write/list, a directory tree
   renderer, grep, a line-counter, and an allowlisted command runner (`go`,
-  `git`, `ls`, `wc`, `find`, `cat`, `echo`, `gofmt`). Every path is resolved
-  against a single sandbox root set via `tools.SetWorkDir` and rejected if
-  it would escape that root (`..`, absolute paths, etc).
+  `git`, `ls`, `wc`, `find`, `cat`, `echo`, `gofmt`), as methods on a
+  `Sandbox` rooted at a single directory (`tools.NewSandbox(dir)`). Every
+  path is resolved against that instance's root and rejected if it would
+  escape it (`..`, absolute paths, etc). A `Sandbox` is just a root string
+  plus methods, so a process can hold many independent ones — the web UI
+  builds a fresh one per request from whatever directory that run asked for.
 - **`internal/executor`** spins up a fresh `yaegi` interpreter per attempt,
   loads only a curated subset of the Go standard library (`fmt`, `strings`,
   `strconv`, `errors`, `sort`, `time`, `regexp`, `bytes`, `unicode`, `math`,
-  `encoding/json`) plus the `tools` package above, evaluates the generated
-  source, and calls `Run()`. Deliberately excluded: `os`, `io`,
-  `io/ioutil`, `os/exec`, `net/http`, `syscall` — see
-  [Sandbox design](#sandbox-design).
+  `encoding/json`) plus the given `*tools.Sandbox`'s bound methods
+  registered as the `tools` package, evaluates the generated source, and
+  calls `Run()`. Deliberately excluded: `os`, `io`, `io/ioutil`, `os/exec`,
+  `net/http`, `syscall` — see [Sandbox design](#sandbox-design).
 - **`internal/agent`** owns the retry loop: build a prompt, call the model,
-  extract the fenced Go code block from the response, run it, and on
-  failure build a follow-up prompt with the previous code and the exact
-  error so the model can fix it, up to `-max-attempts` (default 3).
+  extract the fenced Go code block from the response, run it against the
+  `Agent`'s `*tools.Sandbox`, and on failure build a follow-up prompt with
+  the previous code and the exact error so the model can fix it, up to
+  `-max-attempts` (default 3).
 - **`internal/llm`** is a one-method `Provider` interface
   (`Generate(ctx, systemPrompt, userPrompt) (string, error)`), so swapping
   models never touches the agent or executor. `llm.FromEnv()` selects
@@ -86,10 +90,12 @@ enforced at two levels:
    `import "os"` fails to compile inside the interpreter, full stop. There
    is no filesystem, process, or network access generated code can reach
    that doesn't go through `internal/tools`.
-2. **Path confinement.** Every function in `internal/tools` resolves its
-   path argument against a single sandbox root (set once via
-   `tools.SetWorkDir`) and rejects anything that would resolve outside it
-   (`..`, absolute paths, symlink escapes via `filepath.Clean` + `Rel`).
+2. **Path confinement.** Every method on a `tools.Sandbox` resolves its
+   path argument against that instance's root (set once at
+   `tools.NewSandbox(dir)`) and rejects anything that would resolve outside
+   it (`..`, absolute paths, symlink escapes via `filepath.Clean` + `Rel`).
+   The escape check is per-instance, not global — but the root itself is
+   only as trustworthy as whoever picked it (see the web UI note below).
 
 Other safety measures:
 - `tools.RunCommand` only allows an explicit binary allowlist, and never
@@ -154,5 +160,11 @@ stating plainly rather than glossing over.
 - No multi-file / multi-package generated programs — one `Run()` per task.
 - No token-level streaming from the model itself; both front-ends show a
   complete attempt (code + result) once it finishes, not word-by-word.
-- The web UI has no authentication and binds to a single fixed sandbox root
-  for the lifetime of the process.
+- The web UI has no authentication, and each `/api/run` request can pick its
+  own sandbox directory (defaulting to `-workdir` if it doesn't specify one)
+  via `tools.NewSandbox`, which only checks that the path exists and is a
+  directory — there is no allowlist of directories the server will accept.
+  Anyone who can reach the HTTP port can point a run at any directory the
+  server process can read and write, not just the one it started with. Fine
+  for a single local user; would need real authorization before being
+  exposed beyond `localhost`.

@@ -28,12 +28,13 @@ func (f *fakeProvider) Generate(_ context.Context, _ string, _ string) (string, 
 	return r, nil
 }
 
-func setupExecutor(t *testing.T) *executor.Executor {
+func setupExecutor(t *testing.T) (*executor.Executor, *tools.Sandbox) {
 	t.Helper()
-	if err := tools.SetWorkDir(t.TempDir()); err != nil {
-		t.Fatalf("SetWorkDir: %v", err)
+	sb, err := tools.NewSandbox(t.TempDir())
+	if err != nil {
+		t.Fatalf("NewSandbox: %v", err)
 	}
-	return executor.New()
+	return executor.New(), sb
 }
 
 const validSnippet = "```go\n" + `package main
@@ -49,9 +50,9 @@ func Run() (string, error) {
 ` + "\n```"
 
 func TestAgentSucceedsFirstTry(t *testing.T) {
-	exec := setupExecutor(t)
+	exec, sb := setupExecutor(t)
 	provider := &fakeProvider{responses: []string{validSnippet}}
-	ag := New(provider, exec, 3, nil)
+	ag := New(provider, exec, sb, 3, nil)
 
 	outcome, err := ag.Do(context.Background(), "write a note")
 	if err != nil {
@@ -69,10 +70,10 @@ func TestAgentSucceedsFirstTry(t *testing.T) {
 }
 
 func TestAgentRetriesAfterCompileErrorThenSucceeds(t *testing.T) {
-	exec := setupExecutor(t)
+	exec, sb := setupExecutor(t)
 	broken := "```go\npackage main\n\nfunc Run() (string, error) {\n\tthis is not go\n}\n```"
 	provider := &fakeProvider{responses: []string{broken, validSnippet}}
-	ag := New(provider, exec, 3, nil)
+	ag := New(provider, exec, sb, 3, nil)
 
 	outcome, err := ag.Do(context.Background(), "write a note")
 	if err != nil {
@@ -93,10 +94,10 @@ func TestAgentRetriesAfterCompileErrorThenSucceeds(t *testing.T) {
 }
 
 func TestAgentRetriesAfterToolErrorThenSucceeds(t *testing.T) {
-	exec := setupExecutor(t)
+	exec, sb := setupExecutor(t)
 	failing := "```go\npackage main\n\nimport \"tools\"\n\nfunc Run() (string, error) {\n\treturn tools.ReadFile(\"missing.txt\")\n}\n```"
 	provider := &fakeProvider{responses: []string{failing, validSnippet}}
-	ag := New(provider, exec, 3, nil)
+	ag := New(provider, exec, sb, 3, nil)
 
 	outcome, err := ag.Do(context.Background(), "read a file that may not exist, then write a note")
 	if err != nil {
@@ -111,10 +112,10 @@ func TestAgentRetriesAfterToolErrorThenSucceeds(t *testing.T) {
 }
 
 func TestAgentExhaustsAttempts(t *testing.T) {
-	exec := setupExecutor(t)
+	exec, sb := setupExecutor(t)
 	broken := "```go\npackage main\n\nfunc Run() (string, error) {\n\tstill not go\n}\n```"
 	provider := &fakeProvider{responses: []string{broken, broken, broken}}
-	ag := New(provider, exec, 3, nil)
+	ag := New(provider, exec, sb, 3, nil)
 
 	outcome, err := ag.Do(context.Background(), "impossible task")
 	if err != nil {

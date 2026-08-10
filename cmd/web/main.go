@@ -8,9 +8,14 @@ import (
 	"embed"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io/fs"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
+	"sort"
+	"strings"
 
 	"codeact-agent/internal/agent"
 	"codeact-agent/internal/executor"
@@ -26,10 +31,14 @@ var staticFS embed.FS
 const maxAttemptsCap = 10
 
 // streamMessage is one line of the newline-delimited JSON stream sent to
-// the browser for a run: either a "step" (one generate/execute attempt) or
-// a terminal "done"/"fatal" message.
+// the browser for a run: a "start" (the resolved sandbox directory for this
+// run), a "step" (one generate/execute attempt), or a terminal
+// "done"/"fatal" message.
 type streamMessage struct {
 	Type string `json:"type"`
+
+	// start fields
+	Dir string `json:"dir,omitempty"`
 
 	// step fields
 	Attempt   int    `json:"attempt,omitempty"`
@@ -53,7 +62,12 @@ func main() {
 	)
 	flag.Parse()
 
-	if err := tools.SetWorkDir(*workDir); err != nil {
+	// Fail fast if the default workdir is bad, but the resulting Sandbox
+	// isn't kept: every request builds its own (defaulting to this
+	// directory, or overriding it with its own "dir"), so a bad directory
+	// picked from the UI later can't wedge the whole server.
+	defaultSandbox, err := tools.NewSandbox(*workDir)
+	if err != nil {
 		log.Fatalf("invalid -workdir: %v", err)
 	}
 	provider, err := llm.FromEnv()
@@ -63,7 +77,7 @@ func main() {
 	log.Printf("using model provider: %s", provider.Name())
 	exec := executor.New()
 
-	srv := &server{provider: provider, exec: exec, maxAttempts: *maxAttempts, workDir: tools.WorkDir()}
+	srv := &server{provider: provider, exec: exec, maxAttempts: *maxAttempts, defaultDir: defaultSandbox.Root()}
 
 	staticContent, err := fs.Sub(staticFS, "static")
 	if err != nil {
@@ -74,8 +88,9 @@ func main() {
 	mux.Handle("/", http.FileServer(http.FS(staticContent)))
 	mux.HandleFunc("/api/info", srv.handleInfo)
 	mux.HandleFunc("/api/run", srv.handleRun)
+	mux.HandleFunc("/api/browse", srv.handleBrowse)
 
-	log.Printf("listening on http://localhost%s (sandbox: %s)", *addr, tools.WorkDir())
+	log.Printf("listening on http://localhost%s (default sandbox: %s)", *addr, defaultSandbox.Root())
 	log.Fatal(http.ListenAndServe(*addr, mux))
 }
 
@@ -83,15 +98,76 @@ type server struct {
 	provider    llm.Provider
 	exec        *executor.Executor
 	maxAttempts int
-	workDir     string
+	// defaultDir is used for a run when the request doesn't specify its own
+	// "dir" — it is not a fixed sandbox for the process, just a fallback.
+	defaultDir string
 }
 
 func (s *server) handleInfo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]any{
 		"provider":    s.provider.Name(),
-		"workdir":     s.workDir,
+		"workdir":     s.defaultDir,
 		"maxAttempts": s.maxAttempts,
+	})
+}
+
+// browseEntry is one subdirectory returned by handleBrowse.
+type browseEntry struct {
+	Name string `json:"name"`
+	Path string `json:"path"`
+}
+
+// handleBrowse lists the subdirectories of ?path= (defaulting to the
+// server's default dir) so the web UI's folder picker can navigate the
+// server's filesystem without the browser ever seeing (or needing) a real
+// absolute path from a native file input, which browsers deliberately
+// don't expose for security reasons.
+func (s *server) handleBrowse(w http.ResponseWriter, r *http.Request) {
+	dir := r.URL.Query().Get("path")
+	if dir == "" {
+		dir = s.defaultDir
+	}
+	abs, err := filepath.Abs(dir)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	info, err := os.Stat(abs)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if !info.IsDir() {
+		http.Error(w, fmt.Sprintf("%q is not a directory", abs), http.StatusBadRequest)
+		return
+	}
+
+	entries, err := os.ReadDir(abs)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	dirs := make([]browseEntry, 0, len(entries))
+	for _, e := range entries {
+		name := e.Name()
+		if !e.IsDir() || strings.HasPrefix(name, ".") {
+			continue
+		}
+		dirs = append(dirs, browseEntry{Name: name, Path: filepath.Join(abs, name)})
+	}
+	sort.Slice(dirs, func(i, j int) bool { return dirs[i].Name < dirs[j].Name })
+
+	parent := filepath.Dir(abs)
+	if parent == abs {
+		parent = "" // already at the filesystem root
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"path":    abs,
+		"parent":  parent,
+		"entries": dirs,
 	})
 }
 
@@ -102,10 +178,21 @@ func (s *server) handleRun(w http.ResponseWriter, r *http.Request) {
 	}
 	var req struct {
 		Task        string `json:"task"`
+		Dir         string `json:"dir"`
 		MaxAttempts int    `json:"maxAttempts"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.Task == "" {
 		http.Error(w, "expected JSON body with a non-empty \"task\"", http.StatusBadRequest)
+		return
+	}
+
+	dir := req.Dir
+	if dir == "" {
+		dir = s.defaultDir
+	}
+	sandbox, err := tools.NewSandbox(dir)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("invalid \"dir\": %v", err), http.StatusBadRequest)
 		return
 	}
 
@@ -132,6 +219,8 @@ func (s *server) handleRun(w http.ResponseWriter, r *http.Request) {
 		flusher.Flush()
 	}
 
+	send(streamMessage{Type: "start", Dir: sandbox.Root()})
+
 	onStep := func(step agent.Step) {
 		msg := streamMessage{
 			Type:    "step",
@@ -148,7 +237,7 @@ func (s *server) handleRun(w http.ResponseWriter, r *http.Request) {
 		send(msg)
 	}
 
-	ag := agent.New(s.provider, s.exec, maxAttempts, onStep)
+	ag := agent.New(s.provider, s.exec, sandbox, maxAttempts, onStep)
 	outcome, err := ag.Do(r.Context(), req.Task)
 	if err != nil {
 		send(streamMessage{Type: "fatal", Message: err.Error()})

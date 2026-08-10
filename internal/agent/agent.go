@@ -10,6 +10,7 @@ import (
 
 	"codeact-agent/internal/executor"
 	"codeact-agent/internal/llm"
+	"codeact-agent/internal/tools"
 )
 
 // Step records one iteration of the loop, for logging/inspection.
@@ -33,17 +34,19 @@ type Outcome struct {
 type Agent struct {
 	provider    llm.Provider
 	executor    *executor.Executor
+	sandbox     *tools.Sandbox
 	maxAttempts int
 	onStep      func(Step)
 }
 
-// New builds an Agent. onStep, if non-nil, is called after every attempt so
-// callers (e.g. the CLI) can stream progress; it may be nil.
-func New(provider llm.Provider, exec *executor.Executor, maxAttempts int, onStep func(Step)) *Agent {
+// New builds an Agent scoped to sandbox for the lifetime of every Do() call.
+// onStep, if non-nil, is called after every attempt so callers (e.g. the
+// CLI) can stream progress; it may be nil.
+func New(provider llm.Provider, exec *executor.Executor, sandbox *tools.Sandbox, maxAttempts int, onStep func(Step)) *Agent {
 	if maxAttempts < 1 {
 		maxAttempts = 1
 	}
-	return &Agent{provider: provider, executor: exec, maxAttempts: maxAttempts, onStep: onStep}
+	return &Agent{provider: provider, executor: exec, sandbox: sandbox, maxAttempts: maxAttempts, onStep: onStep}
 }
 
 // Do runs the generate/execute/fix loop for a single task description and
@@ -81,7 +84,7 @@ func (a *Agent) Do(ctx context.Context, task string) (Outcome, error) {
 		}
 		lastCode = code
 
-		result, execErr := a.executor.Run(ctx, code)
+		result, execErr := a.executor.Run(ctx, a.sandbox, code)
 		step := Step{Attempt: attempt, Code: code, Output: result, ExecErr: execErr}
 		steps = append(steps, step)
 		a.report(step)

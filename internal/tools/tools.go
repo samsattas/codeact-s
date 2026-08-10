@@ -1,7 +1,10 @@
 // Package tools exposes a small set of sandboxed operations that generated
-// code is allowed to call. Every function is rooted at a single workDir so
-// that generated code can never read or write outside of it, and shell
-// commands are restricted to an allowlist of binaries.
+// code is allowed to call. Every function is a method on a Sandbox rooted at
+// a single directory so that generated code can never read or write outside
+// of it, and shell commands are restricted to an allowlist of binaries. Each
+// Sandbox is independent, so a caller running multiple tasks concurrently
+// (e.g. the web UI, one request per directory) can give each one its own
+// root without the operations interfering with each other.
 package tools
 
 import (
@@ -19,23 +22,33 @@ import (
 	"time"
 )
 
-// workDir is the sandbox root. All paths passed to the functions below are
-// resolved relative to it, and resolution fails if it escapes the root.
-var workDir = "."
-
-// SetWorkDir sets the sandbox root used by every tool call. It must be
-// called once during agent startup, before any generated code runs.
-func SetWorkDir(dir string) error {
-	abs, err := filepath.Abs(dir)
-	if err != nil {
-		return err
-	}
-	workDir = abs
-	return nil
+// Sandbox confines a set of file/command operations to a single root
+// directory. It is safe for concurrent use by multiple goroutines, since all
+// state (just the root) is set once at construction.
+type Sandbox struct {
+	root string
 }
 
-// WorkDir returns the resolved absolute sandbox root set by SetWorkDir.
-func WorkDir() string { return workDir }
+// NewSandbox builds a Sandbox rooted at dir, which must exist and be a
+// directory. All paths passed to the methods below are resolved relative to
+// the returned root, and resolution fails if it would escape the root.
+func NewSandbox(dir string) (*Sandbox, error) {
+	abs, err := filepath.Abs(dir)
+	if err != nil {
+		return nil, err
+	}
+	info, err := os.Stat(abs)
+	if err != nil {
+		return nil, fmt.Errorf("workdir %q: %w", dir, err)
+	}
+	if !info.IsDir() {
+		return nil, fmt.Errorf("workdir %q is not a directory", dir)
+	}
+	return &Sandbox{root: abs}, nil
+}
+
+// Root returns the resolved absolute sandbox root.
+func (s *Sandbox) Root() string { return s.root }
 
 // skipDirNames lists directories that walks (Grep, CountLinesByExt,
 // FileTree) skip entirely: VCS/dependency directories and common build
@@ -54,23 +67,23 @@ func skipDir(name string) bool {
 }
 
 // resolve turns a user-supplied relative path into an absolute path and
-// verifies it stays inside workDir.
-func resolve(path string) (string, error) {
-	full := filepath.Join(workDir, path)
+// verifies it stays inside the sandbox root.
+func (s *Sandbox) resolve(path string) (string, error) {
+	full := filepath.Join(s.root, path)
 	full = filepath.Clean(full)
-	rel, err := filepath.Rel(workDir, full)
+	rel, err := filepath.Rel(s.root, full)
 	if err != nil {
 		return "", err
 	}
 	if rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
-		return "", fmt.Errorf("path %q escapes the sandbox root %q", path, workDir)
+		return "", fmt.Errorf("path %q escapes the sandbox root %q", path, s.root)
 	}
 	return full, nil
 }
 
 // ReadFile returns the contents of a text file relative to the sandbox root.
-func ReadFile(path string) (string, error) {
-	full, err := resolve(path)
+func (s *Sandbox) ReadFile(path string) (string, error) {
+	full, err := s.resolve(path)
 	if err != nil {
 		return "", err
 	}
@@ -83,8 +96,8 @@ func ReadFile(path string) (string, error) {
 
 // WriteFile writes content to a file relative to the sandbox root, creating
 // parent directories as needed.
-func WriteFile(path string, content string) error {
-	full, err := resolve(path)
+func (s *Sandbox) WriteFile(path string, content string) error {
+	full, err := s.resolve(path)
 	if err != nil {
 		return err
 	}
@@ -95,8 +108,8 @@ func WriteFile(path string, content string) error {
 }
 
 // ListDir returns the entries (files and directories) directly inside path.
-func ListDir(path string) ([]string, error) {
-	full, err := resolve(path)
+func (s *Sandbox) ListDir(path string) ([]string, error) {
+	full, err := s.resolve(path)
 	if err != nil {
 		return nil, err
 	}
@@ -118,8 +131,8 @@ func ListDir(path string) ([]string, error) {
 
 // FileTree renders a textual tree of path up to maxDepth levels deep.
 // Hidden entries (dotfiles) and common build/VCS directories are skipped.
-func FileTree(path string, maxDepth int) (string, error) {
-	full, err := resolve(path)
+func (s *Sandbox) FileTree(path string, maxDepth int) (string, error) {
+	full, err := s.resolve(path)
 	if err != nil {
 		return "", err
 	}
@@ -178,8 +191,8 @@ type GrepMatch struct {
 
 // Grep searches for a regular expression pattern in every text file under
 // root and returns the matching lines.
-func Grep(root string, pattern string) ([]GrepMatch, error) {
-	full, err := resolve(root)
+func (s *Sandbox) Grep(root string, pattern string) ([]GrepMatch, error) {
+	full, err := s.resolve(root)
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +220,7 @@ func Grep(root string, pattern string) ([]GrepMatch, error) {
 			return nil // skip unreadable files
 		}
 		defer f.Close()
-		rel, _ := filepath.Rel(workDir, p)
+		rel, _ := filepath.Rel(s.root, p)
 		scanner := bufio.NewScanner(f)
 		scanner.Buffer(make([]byte, 0, 64*1024), 1024*1024)
 		lineNo := 0
@@ -227,8 +240,8 @@ func Grep(root string, pattern string) ([]GrepMatch, error) {
 }
 
 // CountLinesByExt walks root and returns a line count per file extension.
-func CountLinesByExt(root string) (map[string]int, error) {
-	full, err := resolve(root)
+func (s *Sandbox) CountLinesByExt(root string) (map[string]int, error) {
+	full, err := s.resolve(root)
 	if err != nil {
 		return nil, err
 	}
@@ -278,14 +291,14 @@ var allowedCommands = map[string]bool{
 // RunCommand runs an allowlisted command with the given arguments inside the
 // sandbox root and returns combined stdout+stderr. It is never passed
 // through a shell, so shell metacharacters in args have no special meaning.
-func RunCommand(name string, args ...string) (string, error) {
+func (s *Sandbox) RunCommand(name string, args ...string) (string, error) {
 	if !allowedCommands[name] {
 		return "", fmt.Errorf("command %q is not allowed (allowed: go, git, ls, wc, find, cat, echo, gofmt)", name)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, name, args...)
-	cmd.Dir = workDir
+	cmd.Dir = s.root
 	var out bytes.Buffer
 	cmd.Stdout = &out
 	cmd.Stderr = &out

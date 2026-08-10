@@ -175,13 +175,13 @@
     "semantic_hash": ""
   },
   "cmd/web/main.go": {
-    "mtime": 1786388383.5478275,
-    "ast_hash": "36430b015ef759d94d9d683eeb8c945f",
+    "mtime": 1786387482.171494,
+    "ast_hash": "36df86e5abd245e8cf66a24b23f98a48",
     "semantic_hash": ""
   },
   "cmd/web/main_test.go": {
-    "mtime": 1786388407.5314252,
-    "ast_hash": "6b7c0543f3e5708c03360bc972d799c0",
+    "mtime": 1786387531.8622663,
+    "ast_hash": "1c399e07a1f95e25af59b27bdf9ce72a",
     "semantic_hash": ""
   },
   "go.mod": {
@@ -605,8 +605,8 @@
     "semantic_hash": ""
   },
   "cmd/web/static/index.html": {
-    "mtime": 1786388504.2967527,
-    "ast_hash": "27d745b163b4d620daf8c39a6c438a61",
+    "mtime": 1786387681.4006317,
+    "ast_hash": "91de3c17c45829e167b8fc0d24a0d552",
     "semantic_hash": ""
   },
   "docs/ARCHITECTURE.md": {

@@ -278,6 +278,61 @@
         color: var(--ink);
       }
 
+      .dir-row {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 12px;
+      }
+      .dir-row .tag {
+        flex-shrink: 0;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+      }
+      input#dir {
+        flex: 1;
+        min-width: 0;
+        background: var(--surface-2);
+        color: var(--ink);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 7px 10px;
+        font-size: 12.5px;
+        font-family: var(--font-mono);
+        transition: border-color 0.15s, box-shadow 0.15s;
+      }
+      input#dir:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+      input#dir::placeholder { color: var(--muted); }
+      .browse-btn {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font-ui);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--ink-dim);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 7px 11px;
+        cursor: pointer;
+        transition: color 0.15s, border-color 0.15s, background 0.15s;
+      }
+      .browse-btn:hover {
+        color: var(--ink);
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+
       .prompt-field {
         position: relative;
         display: flex;
@@ -482,11 +537,27 @@
         transition: transform 0.18s ease;
       }
       .entry[open] summary .prompt .chev { transform: rotate(45deg); }
+      .entry summary .prompt .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+      }
       .entry summary .prompt .txt {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      .entry summary .prompt .dir {
+        font-family: var(--font-mono);
+        font-size: 10.5px;
+        font-weight: 500;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .entry summary .prompt .dir:empty { display: none; }
       .entry summary .meta {
         display: flex;
         align-items: center;
@@ -706,6 +777,115 @@
       .final.ok .label { color: var(--good); }
       .final.err .label { color: var(--bad); }
 
+      /* ---------- directory browser modal ---------- */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 12, 16, 0.55);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        z-index: 100;
+      }
+      .modal-backdrop.open { display: flex; }
+      .browse-modal {
+        width: 100%;
+        max-width: 540px;
+        max-height: min(560px, 80vh);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .browse-head {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface-2);
+      }
+      .browse-path {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--ink-dim);
+        overflow-x: auto;
+        white-space: nowrap;
+        flex: 1;
+        min-width: 0;
+      }
+      .browse-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        min-height: 120px;
+      }
+      .browse-item {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        width: 100%;
+        text-align: left;
+        padding: 9px 11px;
+        border: none;
+        background: transparent;
+        border-radius: var(--radius-sm);
+        color: var(--ink);
+        font-size: 13px;
+        font-family: var(--font-ui);
+        cursor: pointer;
+      }
+      .browse-item:hover { background: var(--surface-2); }
+      .browse-item svg { flex-shrink: 0; color: var(--muted); }
+      .browse-empty,
+      .browse-error {
+        padding: 28px 16px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      .browse-error { color: var(--bad); }
+      .browse-footer {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 12px 14px;
+        border-top: 1px solid var(--border);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--ink-dim);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 9px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn-ghost:hover { color: var(--ink); border-color: var(--accent); }
+      #browse-select {
+        background: var(--accent);
+        color: var(--accent-ink);
+        border: none;
+        border-radius: var(--radius-md);
+        padding: 9px 16px;
+        font-size: 13px;
+        font-weight: 650;
+        cursor: pointer;
+      }
+      #browse-select:hover { filter: brightness(1.08); }
+
       footer.page {
         max-width: 900px;
         margin: 0 auto;
@@ -755,6 +935,21 @@
           </div>
         </div>
         <div class="composer-body">
+          <div class="dir-row">
+            <span class="tag">Dir</span>
+            <input
+              id="dir"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="."
+              aria-label="Sandbox directory for this run"
+            />
+            <button type="button" id="browse-dir" class="browse-btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>
+              Browse…
+            </button>
+          </div>
           <div class="prompt-field">
             <span class="glyph" aria-hidden="true">&gt;</span>
             <textarea
@@ -783,6 +978,22 @@
       <span>CodeAct Agent — a proof-of-concept code-as-action agent in Go.</span>
     </footer>
 
+    <div class="modal-backdrop" id="browse-backdrop">
+      <div class="browse-modal" role="dialog" aria-modal="true" aria-label="Choose a directory">
+        <div class="browse-head">
+          <button type="button" class="pager-btn" id="browse-up" aria-label="Go to parent directory">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+          <span class="browse-path" id="browse-path"></span>
+        </div>
+        <div class="browse-list" id="browse-list"></div>
+        <div class="browse-footer">
+          <button type="button" class="btn-ghost" id="browse-cancel">Cancel</button>
+          <button type="button" id="browse-select">Select this folder</button>
+        </div>
+      </div>
+    </div>
+
     <script>
       const EXAMPLES = [
         "list the files in this directory and tell me how many .go files there are",
@@ -794,6 +1005,7 @@
 
       const examplesEl = document.getElementById("examples");
       const taskEl = document.getElementById("task");
+      const dirEl = document.getElementById("dir");
       const runBtn = document.getElementById("run");
       const logEl = document.getElementById("log");
       const emptyEl = document.getElementById("empty");
@@ -823,6 +1035,90 @@
       };
       renderAttemptsControl();
 
+      // ---------- directory browser modal ----------
+      // Browsers deliberately don't expose real absolute filesystem paths
+      // to JS (a native <input type=file webkitdirectory> only yields a
+      // fake path), so picking a folder for the *server's* filesystem has
+      // to be server-backed: /api/browse lists subdirectories of a path,
+      // and this modal lets the user click their way through them.
+      const browseBtn = document.getElementById("browse-dir");
+      const browseBackdrop = document.getElementById("browse-backdrop");
+      const browseUpBtn = document.getElementById("browse-up");
+      const browsePathEl = document.getElementById("browse-path");
+      const browseListEl = document.getElementById("browse-list");
+      const browseCancelBtn = document.getElementById("browse-cancel");
+      const browseSelectBtn = document.getElementById("browse-select");
+
+      const FOLDER_ICON =
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>';
+
+      let browsingPath = "";
+
+      function openBrowser() {
+        browseBackdrop.classList.add("open");
+        loadBrowseDir(dirEl.value.trim());
+      }
+
+      function closeBrowser() {
+        browseBackdrop.classList.remove("open");
+      }
+
+      async function loadBrowseDir(path) {
+        browsePathEl.textContent = path || "…";
+        browseListEl.replaceChildren(el("div", "browse-empty", "Loading…"));
+        try {
+          const url = "/api/browse" + (path ? "?path=" + encodeURIComponent(path) : "");
+          const resp = await fetch(url);
+          if (!resp.ok) {
+            const detail = await resp.text().catch(() => "");
+            browseListEl.replaceChildren(
+              el("div", "browse-error", detail || "failed to list that directory"),
+            );
+            return;
+          }
+          const data = await resp.json();
+          renderBrowseDir(data);
+        } catch (e) {
+          browseListEl.replaceChildren(el("div", "browse-error", String(e)));
+        }
+      }
+
+      function renderBrowseDir(data) {
+        browsingPath = data.path;
+        browsePathEl.textContent = data.path;
+        browsePathEl.title = data.path;
+        browseUpBtn.disabled = !data.parent;
+        browseUpBtn.onclick = () => loadBrowseDir(data.parent);
+
+        if (!data.entries || !data.entries.length) {
+          browseListEl.replaceChildren(el("div", "browse-empty", "No subfolders"));
+          return;
+        }
+        const items = data.entries.map((entry) => {
+          const item = document.createElement("button");
+          item.type = "button";
+          item.className = "browse-item";
+          item.innerHTML = FOLDER_ICON;
+          item.appendChild(document.createTextNode(entry.name));
+          item.onclick = () => loadBrowseDir(entry.path);
+          return item;
+        });
+        browseListEl.replaceChildren(...items);
+      }
+
+      browseBtn.onclick = openBrowser;
+      browseCancelBtn.onclick = closeBrowser;
+      browseSelectBtn.onclick = () => {
+        dirEl.value = browsingPath;
+        closeBrowser();
+      };
+      browseBackdrop.addEventListener("click", (e) => {
+        if (e.target === browseBackdrop) closeBrowser();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && browseBackdrop.classList.contains("open")) closeBrowser();
+      });
+
       EXAMPLES.forEach((ex) => {
         const chip = document.createElement("span");
         chip.className = "chip";
@@ -837,7 +1133,7 @@
       fetch("/api/info")
         .then((r) => r.json())
         .then((info) => {
-          statusTxt.textContent = `${info.provider}  ·  sandbox: ${info.workdir}  ·  max-attempts: ${info.maxAttempts}`;
+          statusTxt.textContent = `${info.provider}  ·  default dir: ${info.workdir}  ·  max-attempts: ${info.maxAttempts}`;
           if (Number.isInteger(info.maxAttempts)) {
             maxAttempts = Math.min(
               ATTEMPTS_MAX,
@@ -845,6 +1141,7 @@
             );
             renderAttemptsControl();
           }
+          if (!dirEl.value) dirEl.value = info.workdir;
         })
         .catch(() => {
           statusTxt.textContent = "could not reach /api/info";
@@ -932,7 +1229,11 @@
         const summary = document.createElement("summary");
         const promptWrap = el("span", "prompt");
         promptWrap.appendChild(el("span", "chev"));
-        promptWrap.appendChild(el("span", "txt", task));
+        const stack = el("span", "stack");
+        stack.appendChild(el("span", "txt", task));
+        const dirLabel = el("span", "dir");
+        stack.appendChild(dirLabel);
+        promptWrap.appendChild(stack);
         summary.appendChild(promptWrap);
 
         const meta = el("span", "meta");
@@ -1010,8 +1311,13 @@
           finalWrap.appendChild(renderFinal(msg));
         }
 
+        function setDir(dir) {
+          dirLabel.textContent = dir ? `in ${dir}` : "";
+          dirLabel.title = dir || "";
+        }
+
         logEl.prepend(details);
-        return { addStep, addFinal, status };
+        return { addStep, addFinal, setDir, status };
       }
 
       async function run() {
@@ -1020,20 +1326,23 @@
         setRunning(true);
         emptyEl.style.display = "none";
 
-        const { addStep, addFinal, status } = newHistoryEntry(task);
+        const dir = dirEl.value.trim();
+        const { addStep, addFinal, setDir, status } = newHistoryEntry(task);
+        setDir(dir);
 
         try {
           const resp = await fetch("/api/run", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ task, maxAttempts }),
+            body: JSON.stringify({ task, dir, maxAttempts }),
           });
           if (!resp.ok || !resp.body) {
+            const detail = await resp.text().catch(() => "");
             status.textContent = "failed";
             status.className = "badge err";
             addFinal({
               success: false,
-              error: "request failed: " + resp.status,
+              error: (detail || "request failed: " + resp.status).trim(),
             });
             return;
           }
@@ -1050,7 +1359,9 @@
               buf = buf.slice(idx + 1);
               if (!line) continue;
               const msg = JSON.parse(line);
-              if (msg.type === "step") {
+              if (msg.type === "start") {
+                setDir(msg.dir);
+              } else if (msg.type === "step") {
                 addStep(msg);
               } else if (msg.type === "done") {
                 addFinal(msg);
