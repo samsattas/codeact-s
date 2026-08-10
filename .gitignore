@@ -1,3 +1,9 @@
 /bin/
 *.exe
 .DS_Store
+
+# graphify-out/ itself is committed (it's the team's shared codebase map),
+# but these two are local-only: cost.json has no value shared, and cache/
+# is just an incremental-rebuild speedup that would otherwise bloat the repo.
+graphify-out/cost.json
+graphify-out/cache/
