@@ -46,6 +46,21 @@ go build -o bin/agent ./cmd/agent
 go build -o bin/web ./cmd/web
 ```
 
+Or use the Makefile shortcuts below, which build and run in a single
+command:
+
+```bash
+make build   # just build both binaries into bin/
+make web     # build + run the web UI
+make agent   # build + run the CLI
+make test    # go test ./...
+make vet     # go vet ./...
+
+# pass flags through with ARGS:
+make web ARGS="-workdir ./some/project -addr :9090"
+make agent ARGS="-workdir . \"list the .go files\""
+```
+
 ### Pick a model
 
 **Local, no API key (default)** — install [Ollama](https://ollama.com), pull

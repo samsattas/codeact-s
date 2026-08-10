@@ -25,6 +25,10 @@ go test ./internal/agent/ -run TestAgentRetriesAfterCompileErrorThenSucceeds -v 
 go vet ./...
 ```
 
+Makefile shortcuts build + run in one command: `make web` / `make agent`
+(pass flags with `make web ARGS="-addr :9090"`), plus `make build`,
+`make test`, `make vet`.
+
 Run the CLI: `./bin/agent -workdir ./some/project "task"` (one-shot) or with no
 task argument for a REPL. Flags: `-workdir` (sandbox root, default `.`),
 `-max-attempts` (default 3), `-v` (print each attempt's code/output).
