@@ -1,6 +1,9 @@
 package agent
 
-import "fmt"
+import (
+	"fmt"
+	"regexp"
+)
 
 // systemPrompt describes the tools API and the contract generated code must
 // follow. It is sent once as the system message on every call.
@@ -44,7 +47,30 @@ Available tools package API (import "tools"):
 
   func tools.RunCommand(name string, args ...string) (string, error)
       Runs an allowlisted command (go, git, ls, wc, find, cat, echo, gofmt)
-      with the given args (no shell involved) and returns combined output.
+      with the given args (no shell involved) and returns combined
+      stdout+stderr as the first value. Its error return is non-nil
+      whenever the command exits non-zero — routine for tools like
+      "go vet", "go test", or "gofmt -l" when they find something to
+      report, NOT a sign that something went wrong.
+
+IMPORTANT — RunCommand's error is not your error. Run()'s own error means
+"the task could not be completed"; it is a completely different thing from
+RunCommand exiting non-zero. When a command's non-zero exit is itself the
+expected result (a linter/vet/test finding issues, "git diff --exit-code"
+finding changes, etc.), IGNORE RunCommand's error and return its output as
+your answer with a NIL error from Run(). For example:
+
+    output, _ := tools.RunCommand("go", "vet", "./...")
+    if strings.TrimSpace(output) == "" {
+        return "go vet found no issues.", nil
+    }
+    return "go vet found issues:\n" + output, nil
+
+Note the "_" — RunCommand's error is deliberately discarded there, because
+the output (not the exit code) is the actual answer to the task. Only
+return a non-nil error from Run() if the command's output is empty or
+clearly shows the command itself could not run (e.g. "not found", "no such
+file").
 
 Only these standard library packages are available: fmt, strings, strconv,
 errors, sort, time, regexp, bytes, unicode, unicode/utf8, math,
@@ -72,19 +98,68 @@ func retryPrompt(task, previousCode, failureReason string) string {
 	return fmt.Sprintf(
 		`Task: %s
 
-Your previous code failed. Fix it and return a corrected, complete code
-block following the exact same contract (package main, import "tools",
-func Run() (string, error)).
+Your previous code failed. Read the failure message below carefully — it
+tells you exactly what is wrong. Fix that specific problem and return a
+corrected, complete code block following the exact same contract (package
+main, import "tools", func Run() (string, error)). Do not return the same
+code again; it must change to address the failure.
 
 Previous code:
 %s
 
 Failure:
 %s
-
-Write the corrected Go code now.`, task, fenced(previousCode), failureReason)
+%s
+Write the corrected Go code now.`, task, fenced(previousCode), failureReason, diagnosisHint(failureReason))
 }
 
 func fenced(code string) string {
 	return "```go\n" + code + "\n```"
+}
+
+var (
+	undefinedRE    = regexp.MustCompile(`undefined: (\w+)`)
+	unusedImportRE = regexp.MustCompile(`imported and not used`)
+	unusedVarRE    = regexp.MustCompile(`declared (and|but) not used`)
+	noNewVarsRE    = regexp.MustCompile(`no new variables on left side of :=`)
+	exitStatusRE   = regexp.MustCompile(`exit status \d+`)
+)
+
+// diagnosisHint recognizes a handful of common yaegi/Go compiler error
+// shapes and turns them into a blunt, specific instruction. Small models
+// tend to re-generate the same broken code when only shown a bare compiler
+// error; naming the exact fix dramatically improves retry success.
+func diagnosisHint(failureReason string) string {
+	if m := undefinedRE.FindStringSubmatch(failureReason); m != nil {
+		name := m[1]
+		return fmt.Sprintf(
+			"\nHint: %q is undefined. This almost always means one of:\n"+
+				"  - you used it without importing its package (e.g. used fmt.* but\n"+
+				"    didn't `import \"fmt\"`) — check your import block lists every\n"+
+				"    package the code references;\n"+
+				"  - you misspelled it, or invented a tools.* function that doesn't\n"+
+				"    exist — only use the exact functions and packages listed above.\n",
+			name,
+		)
+	}
+	if unusedImportRE.MatchString(failureReason) {
+		return "\nHint: you imported a package but never referenced it in the code. Remove the unused import.\n"
+	}
+	if unusedVarRE.MatchString(failureReason) {
+		return "\nHint: you declared a variable but never used it. Remove it, use it, or assign it to `_`.\n"
+	}
+	if noNewVarsRE.MatchString(failureReason) {
+		return "\nHint: every variable on the left of `:=` already exists in this scope. Use `=` instead, or introduce at least one new variable name.\n"
+	}
+	if exitStatusRE.MatchString(failureReason) {
+		return "\nHint: an \"exit status N\" error means tools.RunCommand's underlying command\n" +
+			"exited non-zero — routine for `go vet`/`go test`/etc. reporting real findings,\n" +
+			"not a bug in your code. RunCommand still gives you the command's combined\n" +
+			"output alongside that error. If that output is itself the answer to the task,\n" +
+			"return `output, nil` from Run() — do NOT do `return output, err` or\n" +
+			"`return \"\", err`. A non-nil error from Run() means the task failed; forwarding\n" +
+			"RunCommand's error there causes this exact retry loop, since the caller will\n" +
+			"just keep asking you to fix a \"failure\" that was actually a valid result.\n"
+	}
+	return ""
 }

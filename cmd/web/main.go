@@ -21,6 +21,10 @@ import (
 //go:embed static
 var staticFS embed.FS
 
+// maxAttemptsCap bounds the per-request maxAttempts override from the web
+// UI, so a client can't force an unbounded number of model calls.
+const maxAttemptsCap = 10
+
 // streamMessage is one line of the newline-delimited JSON stream sent to
 // the browser for a run: either a "step" (one generate/execute attempt) or
 // a terminal "done"/"fatal" message.
@@ -97,11 +101,20 @@ func (s *server) handleRun(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		Task string `json:"task"`
+		Task        string `json:"task"`
+		MaxAttempts int    `json:"maxAttempts"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.Task == "" {
 		http.Error(w, "expected JSON body with a non-empty \"task\"", http.StatusBadRequest)
 		return
+	}
+
+	maxAttempts := s.maxAttempts
+	if req.MaxAttempts > 0 {
+		maxAttempts = req.MaxAttempts
+		if maxAttempts > maxAttemptsCap {
+			maxAttempts = maxAttemptsCap
+		}
 	}
 
 	flusher, ok := w.(http.Flusher)
@@ -135,7 +148,7 @@ func (s *server) handleRun(w http.ResponseWriter, r *http.Request) {
 		send(msg)
 	}
 
-	ag := agent.New(s.provider, s.exec, s.maxAttempts, onStep)
+	ag := agent.New(s.provider, s.exec, maxAttempts, onStep)
 	outcome, err := ag.Do(r.Context(), req.Task)
 	if err != nil {
 		send(streamMessage{Type: "fatal", Message: err.Error()})
