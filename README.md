@@ -9,6 +9,19 @@ Go source in real time.
 
 **Live demo:** _pending deployment — see [Deployment](#deployment) below._
 
+<p align="center">
+  <img src="docs/images/hero-dark.png" width="49%" alt="CodeAct Agent web UI, idle state, dark mode" />
+  <img src="docs/images/run-in-action.png" width="49%" alt="CodeAct Agent running a real task: generated Go code that calls tools.RunCommand(&quot;go&quot;, &quot;vet&quot;, ...) and its successful result" />
+</p>
+
+<details>
+<summary>More screenshots (light mode, folder picker)</summary>
+<p align="center">
+  <img src="docs/images/hero-light.png" width="49%" alt="CodeAct Agent web UI, idle state, light mode" />
+  <img src="docs/images/folder-browser.png" width="49%" alt="The server-backed folder browser modal for picking a sandbox directory" />
+</p>
+</details>
+
 ## What it does
 
 - Understands natural-language tasks about a project directory: "find all
