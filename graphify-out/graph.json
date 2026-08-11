@@ -2388,8 +2388,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_primitive",
-      "community": 46,
-      "community_name": "radius",
+      "community": 34,
+      "community_name": "primitive",
       "norm_label": "primitive"
     },
     {
@@ -3401,7 +3401,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_fontsize_sm",
       "community": 50,
-      "community_name": "sm",
+      "community_name": "shadow",
       "norm_label": "sm"
     },
     {
@@ -3412,7 +3412,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_sm_value",
       "community": 50,
-      "community_name": "sm",
+      "community_name": "shadow",
       "norm_label": "$value"
     },
     {
@@ -3423,7 +3423,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_sm_type",
       "community": 50,
-      "community_name": "sm",
+      "community_name": "shadow",
       "norm_label": "$type"
     },
     {
@@ -3676,7 +3676,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_radius_sm",
       "community": 50,
-      "community_name": "sm",
+      "community_name": "shadow",
       "norm_label": "sm"
     },
     {
@@ -3686,8 +3686,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_radius_default",
-      "community": 115,
-      "community_name": "default",
+      "community": 46,
+      "community_name": "radius",
       "norm_label": "default"
     },
     {
@@ -3697,8 +3697,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_default_value",
-      "community": 115,
-      "community_name": "default",
+      "community": 46,
+      "community_name": "radius",
       "norm_label": "$value"
     },
     {
@@ -3708,8 +3708,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_default_type",
-      "community": 115,
-      "community_name": "default",
+      "community": 46,
+      "community_name": "radius",
       "norm_label": "$type"
     },
     {
@@ -3719,8 +3719,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_radius_md",
-      "community": 46,
-      "community_name": "radius",
+      "community": 144,
+      "community_name": "md",
       "norm_label": "md"
     },
     {
@@ -3730,8 +3730,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_md_value",
-      "community": 46,
-      "community_name": "radius",
+      "community": 144,
+      "community_name": "md",
       "norm_label": "$value"
     },
     {
@@ -3741,8 +3741,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_md_type",
-      "community": 46,
-      "community_name": "radius",
+      "community": 144,
+      "community_name": "md",
       "norm_label": "$type"
     },
     {
@@ -3807,8 +3807,8 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_primitive_shadow",
-      "community": 46,
-      "community_name": "radius",
+      "community": 50,
+      "community_name": "shadow",
       "norm_label": "shadow"
     },
     {
@@ -3830,7 +3830,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_shadow_sm",
       "community": 50,
-      "community_name": "sm",
+      "community_name": "shadow",
       "norm_label": "sm"
     },
     {
@@ -3840,8 +3840,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_shadow_default",
-      "community": 115,
-      "community_name": "default",
+      "community": 46,
+      "community_name": "radius",
       "norm_label": "default"
     },
     {
@@ -3851,8 +3851,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_shadow_md",
-      "community": 46,
-      "community_name": "radius",
+      "community": 144,
+      "community_name": "md",
       "norm_label": "md"
     },
     {
@@ -3874,7 +3874,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_primitive_duration",
       "community": 34,
-      "community_name": "duration",
+      "community_name": "primitive",
       "norm_label": "duration"
     },
     {
@@ -3885,7 +3885,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_duration_fast",
       "community": 34,
-      "community_name": "duration",
+      "community_name": "primitive",
       "norm_label": "fast"
     },
     {
@@ -3896,7 +3896,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_fast_value",
       "community": 34,
-      "community_name": "duration",
+      "community_name": "primitive",
       "norm_label": "$value"
     },
     {
@@ -3907,7 +3907,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_fast_type",
       "community": 34,
-      "community_name": "duration",
+      "community_name": "primitive",
       "norm_label": "$type"
     },
     {
@@ -3918,7 +3918,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_duration_normal",
       "community": 34,
-      "community_name": "duration",
+      "community_name": "primitive",
       "norm_label": "normal"
     },
     {
@@ -3929,7 +3929,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_normal_value",
       "community": 34,
-      "community_name": "duration",
+      "community_name": "primitive",
       "norm_label": "$value"
     },
     {
@@ -3940,7 +3940,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_normal_type",
       "community": 34,
-      "community_name": "duration",
+      "community_name": "primitive",
       "norm_label": "$type"
     },
     {
@@ -3951,7 +3951,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_duration_slow",
       "community": 34,
-      "community_name": "duration",
+      "community_name": "primitive",
       "norm_label": "slow"
     },
     {
@@ -3962,7 +3962,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_slow_value",
       "community": 34,
-      "community_name": "duration",
+      "community_name": "primitive",
       "norm_label": "$value"
     },
     {
@@ -3973,7 +3973,7 @@
       "_origin": "ast",
       "id": "claude_skills_design_system_templates_design_tokens_starter_slow_type",
       "community": 34,
-      "community_name": "duration",
+      "community_name": "primitive",
       "norm_label": "$type"
     },
     {
@@ -8417,8 +8417,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_core_bm25_vocabulary",
-      "community": 3,
-      "community_name": "BM25",
+      "community": 97,
+      "community_name": "search",
       "norm_label": ".vocabulary()"
     },
     {
@@ -8465,8 +8465,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_core_suggest_terms",
-      "community": 3,
-      "community_name": "BM25",
+      "community": 97,
+      "community_name": "search",
       "norm_label": "_suggest_terms()"
     },
     {
@@ -8501,8 +8501,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_core_detect_domain",
-      "community": 97,
-      "community_name": "search",
+      "community": 115,
+      "community_name": "detect_domain",
       "norm_label": "detect_domain()"
     },
     {
@@ -8525,8 +8525,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_core_search_stack",
-      "community": 3,
-      "community_name": "BM25",
+      "community": 97,
+      "community_name": "search",
       "norm_label": "search_stack()"
     },
     {
@@ -8591,8 +8591,8 @@
       "source_location": "L225",
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_core_rationale_225",
-      "community": 3,
-      "community_name": "BM25",
+      "community": 97,
+      "community_name": "search",
       "norm_label": "all indexed terms, for suggestion/typo-recovery purposes."
     },
     {
@@ -8635,8 +8635,8 @@
       "source_location": "L293",
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_core_rationale_293",
-      "community": 3,
-      "community_name": "BM25",
+      "community": 97,
+      "community_name": "search",
       "norm_label": "nearest known vocabulary terms for a query that returned 0 hits, so the caller..."
     },
     {
@@ -8646,8 +8646,8 @@
       "source_location": "L378",
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_core_rationale_378",
-      "community": 97,
-      "community_name": "search",
+      "community": 115,
+      "community_name": "detect_domain",
       "norm_label": "auto-detect the most relevant domain from query. matches are weighted by..."
     },
     {
@@ -8668,8 +8668,8 @@
       "source_location": "L443",
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_core_rationale_443",
-      "community": 3,
-      "community_name": "BM25",
+      "community": 97,
+      "community_name": "search",
       "norm_label": "search stack-specific guidelines"
     },
     {
@@ -9347,8 +9347,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_search",
-      "community": 24,
-      "community_name": "design_system.py",
+      "community": 97,
+      "community_name": "search",
       "norm_label": "scripts/search.py"
     },
     {
@@ -9359,8 +9359,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_search_format_output",
-      "community": 24,
-      "community_name": "design_system.py",
+      "community": 97,
+      "community_name": "search",
       "norm_label": "format_output()"
     },
     {
@@ -9370,8 +9370,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_search_rationale_45",
-      "community": 24,
-      "community_name": "design_system.py",
+      "community": 97,
+      "community_name": "search",
       "norm_label": "format results for claude consumption (token-optimized)"
     },
     {
@@ -9381,8 +9381,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_tests_test_core",
-      "community": 97,
-      "community_name": "search",
+      "community": 24,
+      "community_name": "design_system.py",
       "norm_label": "test_core.py"
     },
     {
@@ -9503,8 +9503,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_tests_test_core_testsearchdomains_test_every_stack_file_exists_and_is_searchable",
-      "community": 3,
-      "community_name": "BM25",
+      "community": 97,
+      "community_name": "search",
       "norm_label": ".test_every_stack_file_exists_and_is_searchable()"
     },
     {
@@ -9516,8 +9516,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_tests_test_core_testdomaindetection",
-      "community": 97,
-      "community_name": "search",
+      "community": 115,
+      "community_name": "detect_domain",
       "norm_label": "testdomaindetection"
     },
     {
@@ -9528,8 +9528,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_tests_test_core_testdomaindetection_test_style_keywords_route_to_style",
-      "community": 97,
-      "community_name": "search",
+      "community": 115,
+      "community_name": "detect_domain",
       "norm_label": ".test_style_keywords_route_to_style()"
     },
     {
@@ -9540,8 +9540,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_tests_test_core_testdomaindetection_test_accessibility_keywords_route_to_ux",
-      "community": 97,
-      "community_name": "search",
+      "community": 115,
+      "community_name": "detect_domain",
       "norm_label": ".test_accessibility_keywords_route_to_ux()"
     },
     {
@@ -9552,8 +9552,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_tests_test_core_testdomaindetection_test_ambiguous_query_returns_runner_up",
-      "community": 97,
-      "community_name": "search",
+      "community": 115,
+      "community_name": "detect_domain",
       "norm_label": ".test_ambiguous_query_returns_runner_up()"
     },
     {
@@ -9564,8 +9564,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "claude_skills_ui_ux_pro_max_scripts_tests_test_core_testdomaindetection_test_empty_query_falls_back_to_style",
-      "community": 97,
-      "community_name": "search",
+      "community": 115,
+      "community_name": "detect_domain",
       "norm_label": ".test_empty_query_falls_back_to_style()"
     },
     {
@@ -10089,8 +10089,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "cmd_web_main",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": "web/main.go"
     },
     {
@@ -10100,8 +10100,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "web_streammessage",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": "streammessage"
     },
     {
@@ -10111,8 +10111,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "cmd_web_main_main",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": "main()"
     },
     {
@@ -10122,8 +10122,8 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "web_server",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": "server"
     },
     {
@@ -10133,8 +10133,8 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "web_server_handleinfo",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": ".handleinfo()"
     },
     {
@@ -10144,8 +10144,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "responsewriter",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": "responsewriter"
     },
     {
@@ -10155,8 +10155,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "request",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": "request"
     },
     {
@@ -10166,8 +10166,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "web_browseentry",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": "browseentry"
     },
     {
@@ -10177,8 +10177,8 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "web_server_handlebrowse",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": ".handlebrowse()"
     },
     {
@@ -10188,8 +10188,8 @@
       "source_location": "L174",
       "_origin": "ast",
       "id": "web_server_handlerun",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": ".handlerun()"
     },
     {
@@ -10994,7 +10994,7 @@
       "_origin": "ast",
       "id": "internal_llm_anthropic",
       "community": 58,
-      "community_name": "anthropic.go",
+      "community_name": "newTestAnthropicProvider",
       "norm_label": "anthropic.go"
     },
     {
@@ -11005,7 +11005,7 @@
       "_origin": "ast",
       "id": "llm_anthropicprovider",
       "community": 58,
-      "community_name": "anthropic.go",
+      "community_name": "newTestAnthropicProvider",
       "norm_label": "anthropicprovider"
     },
     {
@@ -11016,73 +11016,73 @@
       "_origin": "ast",
       "id": "internal_llm_anthropic_go_client",
       "community": 58,
-      "community_name": "anthropic.go",
+      "community_name": "newTestAnthropicProvider",
       "norm_label": "client"
     },
     {
       "label": "NewAnthropicProvider()",
       "file_type": "code",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L20",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "internal_llm_anthropic_newanthropicprovider",
       "community": 58,
-      "community_name": "anthropic.go",
+      "community_name": "newTestAnthropicProvider",
       "norm_label": "newanthropicprovider()"
     },
     {
       "label": ".Name()",
       "file_type": "code",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L28",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "llm_anthropicprovider_name",
       "community": 58,
-      "community_name": "anthropic.go",
+      "community_name": "newTestAnthropicProvider",
       "norm_label": ".name()"
     },
     {
       "label": "anthropicRequest",
       "file_type": "code",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L30",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "llm_anthropicrequest",
       "community": 58,
-      "community_name": "anthropic.go",
+      "community_name": "newTestAnthropicProvider",
       "norm_label": "anthropicrequest"
     },
     {
       "label": "anthropicMessage",
       "file_type": "code",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L37",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "llm_anthropicmessage",
       "community": 58,
-      "community_name": "anthropic.go",
+      "community_name": "newTestAnthropicProvider",
       "norm_label": "anthropicmessage"
     },
     {
       "label": "anthropicResponse",
       "file_type": "code",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L42",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "llm_anthropicresponse",
       "community": 58,
-      "community_name": "anthropic.go",
+      "community_name": "newTestAnthropicProvider",
       "norm_label": "anthropicresponse"
     },
     {
       "label": ".Generate()",
       "file_type": "code",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L53",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "llm_anthropicprovider_generate",
       "community": 58,
-      "community_name": "anthropic.go",
+      "community_name": "newTestAnthropicProvider",
       "norm_label": ".generate()"
     },
     {
@@ -11093,8 +11093,96 @@
       "_origin": "ast",
       "id": "internal_llm_anthropic_go_context",
       "community": 58,
-      "community_name": "anthropic.go",
+      "community_name": "newTestAnthropicProvider",
       "norm_label": "context"
+    },
+    {
+      "label": "anthropic_test.go",
+      "file_type": "code",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "internal_llm_anthropic_test",
+      "community": 58,
+      "community_name": "newTestAnthropicProvider",
+      "norm_label": "anthropic_test.go"
+    },
+    {
+      "label": "newTestAnthropicProvider()",
+      "file_type": "code",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "internal_llm_anthropic_test_newtestanthropicprovider",
+      "community": 58,
+      "community_name": "newTestAnthropicProvider",
+      "norm_label": "newtestanthropicprovider()"
+    },
+    {
+      "label": "TestAnthropicProviderName()",
+      "file_type": "code",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "internal_llm_anthropic_test_testanthropicprovidername",
+      "community": 58,
+      "community_name": "newTestAnthropicProvider",
+      "norm_label": "testanthropicprovidername()"
+    },
+    {
+      "label": "T",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "internal_llm_anthropic_test_go_t",
+      "community": 58,
+      "community_name": "newTestAnthropicProvider",
+      "norm_label": "t"
+    },
+    {
+      "label": "TestAnthropicProviderGenerateSuccess()",
+      "file_type": "code",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "internal_llm_anthropic_test_testanthropicprovidergeneratesuccess",
+      "community": 58,
+      "community_name": "newTestAnthropicProvider",
+      "norm_label": "testanthropicprovidergeneratesuccess()"
+    },
+    {
+      "label": "TestAnthropicProviderGenerateConcatenatesTextBlocks()",
+      "file_type": "code",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L68",
+      "_origin": "ast",
+      "id": "internal_llm_anthropic_test_testanthropicprovidergenerateconcatenatestextblocks",
+      "community": 58,
+      "community_name": "newTestAnthropicProvider",
+      "norm_label": "testanthropicprovidergenerateconcatenatestextblocks()"
+    },
+    {
+      "label": "TestAnthropicProviderGenerateAPIError()",
+      "file_type": "code",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "internal_llm_anthropic_test_testanthropicprovidergenerateapierror",
+      "community": 58,
+      "community_name": "newTestAnthropicProvider",
+      "norm_label": "testanthropicprovidergenerateapierror()"
+    },
+    {
+      "label": "TestAnthropicProviderGenerateHTTPError()",
+      "file_type": "code",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L104",
+      "_origin": "ast",
+      "id": "internal_llm_anthropic_test_testanthropicprovidergeneratehttperror",
+      "community": 58,
+      "community_name": "newTestAnthropicProvider",
+      "norm_label": "testanthropicprovidergeneratehttperror()"
     },
     {
       "label": "llm.go",
@@ -11103,8 +11191,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_llm_llm",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": "llm.go"
     },
     {
@@ -11114,8 +11202,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "llm_provider",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": "provider"
     },
     {
@@ -11125,9 +11213,75 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "internal_llm_llm_fromenv",
-      "community": 2,
-      "community_name": "Sandbox",
+      "community": 11,
+      "community_name": "newTestServer",
       "norm_label": "fromenv()"
+    },
+    {
+      "label": "llm_test.go",
+      "file_type": "code",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "internal_llm_llm_test",
+      "community": 11,
+      "community_name": "newTestServer",
+      "norm_label": "llm_test.go"
+    },
+    {
+      "label": "TestFromEnvPrefersAnthropicWhenKeySet()",
+      "file_type": "code",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "internal_llm_llm_test_testfromenvprefersanthropicwhenkeyset",
+      "community": 11,
+      "community_name": "newTestServer",
+      "norm_label": "testfromenvprefersanthropicwhenkeyset()"
+    },
+    {
+      "label": "T",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "internal_llm_llm_test_go_t",
+      "community": 11,
+      "community_name": "newTestServer",
+      "norm_label": "t"
+    },
+    {
+      "label": "TestFromEnvRespectsAnthropicModelOverride()",
+      "file_type": "code",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "internal_llm_llm_test_testfromenvrespectsanthropicmodeloverride",
+      "community": 11,
+      "community_name": "newTestServer",
+      "norm_label": "testfromenvrespectsanthropicmodeloverride()"
+    },
+    {
+      "label": "TestFromEnvFallsBackToOllamaWhenReachable()",
+      "file_type": "code",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "internal_llm_llm_test_testfromenvfallsbacktoollamawhenreachable",
+      "community": 11,
+      "community_name": "newTestServer",
+      "norm_label": "testfromenvfallsbacktoollamawhenreachable()"
+    },
+    {
+      "label": "TestFromEnvErrorsWhenOllamaUnreachable()",
+      "file_type": "code",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L56",
+      "_origin": "ast",
+      "id": "internal_llm_llm_test_testfromenverrorswhenollamaunreachable",
+      "community": 11,
+      "community_name": "newTestServer",
+      "norm_label": "testfromenverrorswhenollamaunreachable()"
     },
     {
       "label": "ollama.go",
@@ -11137,7 +11291,7 @@
       "_origin": "ast",
       "id": "internal_llm_ollama",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": "ollama.go"
     },
     {
@@ -11148,7 +11302,7 @@
       "_origin": "ast",
       "id": "llm_ollamaprovider",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": "ollamaprovider"
     },
     {
@@ -11159,7 +11313,7 @@
       "_origin": "ast",
       "id": "internal_llm_ollama_go_client",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": "client"
     },
     {
@@ -11170,7 +11324,7 @@
       "_origin": "ast",
       "id": "internal_llm_ollama_newollamaprovider",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": "newollamaprovider()"
     },
     {
@@ -11181,7 +11335,7 @@
       "_origin": "ast",
       "id": "llm_ollamaprovider_name",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": ".name()"
     },
     {
@@ -11192,7 +11346,7 @@
       "_origin": "ast",
       "id": "llm_ollamaprovider_ping",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": ".ping()"
     },
     {
@@ -11203,7 +11357,7 @@
       "_origin": "ast",
       "id": "internal_llm_ollama_go_context",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": "context"
     },
     {
@@ -11214,7 +11368,7 @@
       "_origin": "ast",
       "id": "llm_ollamachatrequest",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": "ollamachatrequest"
     },
     {
@@ -11225,7 +11379,7 @@
       "_origin": "ast",
       "id": "llm_ollamamessage",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": "ollamamessage"
     },
     {
@@ -11236,7 +11390,7 @@
       "_origin": "ast",
       "id": "llm_ollamachatresponse",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": "ollamachatresponse"
     },
     {
@@ -11247,8 +11401,96 @@
       "_origin": "ast",
       "id": "llm_ollamaprovider_generate",
       "community": 36,
-      "community_name": "OllamaProvider",
+      "community_name": "NewOllamaProvider",
       "norm_label": ".generate()"
+    },
+    {
+      "label": "ollama_test.go",
+      "file_type": "code",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "internal_llm_ollama_test",
+      "community": 36,
+      "community_name": "NewOllamaProvider",
+      "norm_label": "ollama_test.go"
+    },
+    {
+      "label": "TestOllamaProviderName()",
+      "file_type": "code",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "internal_llm_ollama_test_testollamaprovidername",
+      "community": 36,
+      "community_name": "NewOllamaProvider",
+      "norm_label": "testollamaprovidername()"
+    },
+    {
+      "label": "T",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "internal_llm_ollama_test_go_t",
+      "community": 36,
+      "community_name": "NewOllamaProvider",
+      "norm_label": "t"
+    },
+    {
+      "label": "TestOllamaProviderGenerateSuccess()",
+      "file_type": "code",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "internal_llm_ollama_test_testollamaprovidergeneratesuccess",
+      "community": 36,
+      "community_name": "NewOllamaProvider",
+      "norm_label": "testollamaprovidergeneratesuccess()"
+    },
+    {
+      "label": "TestOllamaProviderGenerateHTTPError()",
+      "file_type": "code",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L57",
+      "_origin": "ast",
+      "id": "internal_llm_ollama_test_testollamaprovidergeneratehttperror",
+      "community": 36,
+      "community_name": "NewOllamaProvider",
+      "norm_label": "testollamaprovidergeneratehttperror()"
+    },
+    {
+      "label": "TestOllamaProviderGenerateAPIError()",
+      "file_type": "code",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "internal_llm_ollama_test_testollamaprovidergenerateapierror",
+      "community": 36,
+      "community_name": "NewOllamaProvider",
+      "norm_label": "testollamaprovidergenerateapierror()"
+    },
+    {
+      "label": "TestOllamaProviderPingSuccess()",
+      "file_type": "code",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L87",
+      "_origin": "ast",
+      "id": "internal_llm_ollama_test_testollamaproviderpingsuccess",
+      "community": 36,
+      "community_name": "NewOllamaProvider",
+      "norm_label": "testollamaproviderpingsuccess()"
+    },
+    {
+      "label": "TestOllamaProviderPingFailure()",
+      "file_type": "code",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L102",
+      "_origin": "ast",
+      "id": "internal_llm_ollama_test_testollamaproviderpingfailure",
+      "community": 36,
+      "community_name": "NewOllamaProvider",
+      "norm_label": "testollamaproviderpingfailure()"
     },
     {
       "label": "tools.go",
@@ -24245,7 +24487,7 @@
       "label": "Architecture",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L44",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "claude_architecture",
       "community": 48,
@@ -24311,7 +24553,7 @@
       "label": "Pick a model",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L49",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "readme_pick_a_model",
       "community": 48,
@@ -24322,7 +24564,7 @@
       "label": "Run the CLI",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L65",
+      "source_location": "L80",
       "_origin": "ast",
       "id": "readme_run_the_cli",
       "community": 48,
@@ -24333,7 +24575,7 @@
       "label": "Run the web UI",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L75",
+      "source_location": "L90",
       "_origin": "ast",
       "id": "readme_run_the_web_ui",
       "community": 48,
@@ -24344,7 +24586,7 @@
       "label": "Testing",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L92",
+      "source_location": "L107",
       "_origin": "ast",
       "id": "readme_testing",
       "community": 48,
@@ -24355,7 +24597,7 @@
       "label": "Tech stack",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L103",
+      "source_location": "L118",
       "_origin": "ast",
       "id": "readme_tech_stack",
       "community": 48,
@@ -24366,7 +24608,7 @@
       "label": "Project layout",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L108",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "readme_project_layout",
       "community": 48,
@@ -24377,7 +24619,7 @@
       "label": "Deployment",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L120",
+      "source_location": "L135",
       "_origin": "ast",
       "id": "readme_deployment",
       "community": 48,
@@ -24509,7 +24751,7 @@
       "label": "What the security-relevant tests actually check",
       "file_type": "document",
       "source_file": "docs/TESTING.md",
-      "source_location": "L31",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "docs_testing_what_the_security_relevant_tests_actually_check",
       "community": 48,
@@ -24520,7 +24762,7 @@
       "label": "Manual end-to-end validation",
       "file_type": "document",
       "source_file": "docs/TESTING.md",
-      "source_location": "L45",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "docs_testing_manual_end_to_end_validation",
       "community": 48,
@@ -41598,7 +41840,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L20",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "internal_llm_anthropic",
@@ -41609,7 +41851,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L37",
+      "source_location": "L41",
       "weight": 1.0,
       "_origin": "ast",
       "source": "internal_llm_anthropic",
@@ -41631,7 +41873,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L30",
+      "source_location": "L34",
       "weight": 1.0,
       "_origin": "ast",
       "source": "internal_llm_anthropic",
@@ -41642,7 +41884,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L42",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "internal_llm_anthropic",
@@ -41653,7 +41895,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L20",
+      "source_location": "L23",
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
@@ -41664,8 +41906,20 @@
     {
       "relation": "references",
       "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L12",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_newtestanthropicprovider",
+      "target": "llm_anthropicprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L17",
+      "source_location": "L20",
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
@@ -41677,7 +41931,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L53",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast",
       "source": "llm_anthropicprovider",
@@ -41688,12 +41942,36 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L28",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "llm_anthropicprovider",
       "target": "llm_anthropicprovider_name",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_newtestanthropicprovider",
+      "target": "internal_llm_anthropic_newanthropicprovider"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_testanthropicprovidername",
+      "target": "internal_llm_anthropic_newanthropicprovider"
     },
     {
       "relation": "calls",
@@ -41711,7 +41989,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L34",
+      "source_location": "L38",
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
@@ -41723,12 +42001,186 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "internal/llm/anthropic.go",
-      "source_location": "L53",
+      "source_location": "L57",
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
       "source": "llm_anthropicprovider_generate",
       "target": "internal_llm_anthropic_go_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test",
+      "target": "internal_llm_anthropic_test_newtestanthropicprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test",
+      "target": "internal_llm_anthropic_test_testanthropicprovidergenerateapierror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L68",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test",
+      "target": "internal_llm_anthropic_test_testanthropicprovidergenerateconcatenatestextblocks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L104",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test",
+      "target": "internal_llm_anthropic_test_testanthropicprovidergeneratehttperror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test",
+      "target": "internal_llm_anthropic_test_testanthropicprovidergeneratesuccess",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test",
+      "target": "internal_llm_anthropic_test_testanthropicprovidername",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L97",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_testanthropicprovidergenerateapierror",
+      "target": "internal_llm_anthropic_test_newtestanthropicprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L79",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_testanthropicprovidergenerateconcatenatestextblocks",
+      "target": "internal_llm_anthropic_test_newtestanthropicprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_testanthropicprovidergeneratehttperror",
+      "target": "internal_llm_anthropic_test_newtestanthropicprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_testanthropicprovidergeneratesuccess",
+      "target": "internal_llm_anthropic_test_newtestanthropicprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L18",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_testanthropicprovidername",
+      "target": "internal_llm_anthropic_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L89",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_testanthropicprovidergenerateapierror",
+      "target": "internal_llm_anthropic_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L68",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_testanthropicprovidergenerateconcatenatestextblocks",
+      "target": "internal_llm_anthropic_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L104",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_testanthropicprovidergeneratehttperror",
+      "target": "internal_llm_anthropic_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/anthropic_test.go",
+      "source_location": "L25",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_anthropic_test_testanthropicprovidergeneratesuccess",
+      "target": "internal_llm_anthropic_test_go_t",
       "confidence_score": 1.0
     },
     {
@@ -41776,6 +42228,146 @@
       "_origin": "ast",
       "source": "internal_llm_llm_fromenv",
       "target": "internal_llm_ollama_newollamaprovider"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_llm_test_testfromenverrorswhenollamaunreachable",
+      "target": "internal_llm_llm_fromenv"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_llm_test_testfromenvfallsbacktoollamawhenreachable",
+      "target": "internal_llm_llm_fromenv"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_llm_test_testfromenvprefersanthropicwhenkeyset",
+      "target": "internal_llm_llm_fromenv"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_llm_test_testfromenvrespectsanthropicmodeloverride",
+      "target": "internal_llm_llm_fromenv"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L56",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_llm_test",
+      "target": "internal_llm_llm_test_testfromenverrorswhenollamaunreachable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_llm_test",
+      "target": "internal_llm_llm_test_testfromenvfallsbacktoollamawhenreachable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_llm_test",
+      "target": "internal_llm_llm_test_testfromenvprefersanthropicwhenkeyset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_llm_test",
+      "target": "internal_llm_llm_test_testfromenvrespectsanthropicmodeloverride",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L10",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_llm_test_testfromenvprefersanthropicwhenkeyset",
+      "target": "internal_llm_llm_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L56",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_llm_test_testfromenverrorswhenollamaunreachable",
+      "target": "internal_llm_llm_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L37",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_llm_test_testfromenvfallsbacktoollamawhenreachable",
+      "target": "internal_llm_llm_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/llm_test.go",
+      "source_location": "L24",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_llm_test_testfromenvrespectsanthropicmodeloverride",
+      "target": "internal_llm_llm_test_go_t",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -41890,6 +42482,78 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaprovidergenerateapierror",
+      "target": "internal_llm_ollama_newollamaprovider"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaprovidergeneratehttperror",
+      "target": "internal_llm_ollama_newollamaprovider"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaprovidergeneratesuccess",
+      "target": "internal_llm_ollama_newollamaprovider"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaprovidername",
+      "target": "internal_llm_ollama_newollamaprovider"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L108",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaproviderpingfailure",
+      "target": "internal_llm_ollama_newollamaprovider"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaproviderpingsuccess",
+      "target": "internal_llm_ollama_newollamaprovider"
+    },
+    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "internal/llm/ollama.go",
@@ -41935,6 +42599,144 @@
       "_origin": "ast",
       "source": "llm_ollamachatresponse",
       "target": "llm_ollamamessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test",
+      "target": "internal_llm_ollama_test_testollamaprovidergenerateapierror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test",
+      "target": "internal_llm_ollama_test_testollamaprovidergeneratehttperror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test",
+      "target": "internal_llm_ollama_test_testollamaprovidergeneratesuccess",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test",
+      "target": "internal_llm_ollama_test_testollamaprovidername",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L102",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test",
+      "target": "internal_llm_ollama_test_testollamaproviderpingfailure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L87",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test",
+      "target": "internal_llm_ollama_test_testollamaproviderpingsuccess",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L12",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaprovidername",
+      "target": "internal_llm_ollama_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L74",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaprovidergenerateapierror",
+      "target": "internal_llm_ollama_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L57",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaprovidergeneratehttperror",
+      "target": "internal_llm_ollama_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaprovidergeneratesuccess",
+      "target": "internal_llm_ollama_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L102",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaproviderpingfailure",
+      "target": "internal_llm_ollama_test_go_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "internal/llm/ollama_test.go",
+      "source_location": "L87",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast",
+      "source": "internal_llm_ollama_test_testollamaproviderpingsuccess",
+      "target": "internal_llm_ollama_test_go_t",
       "confidence_score": 1.0
     },
     {
@@ -54645,7 +55447,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L90",
+      "source_location": "L94",
       "weight": 1.0,
       "_origin": "ast",
       "source": "claude",
@@ -54656,7 +55458,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L93",
+      "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast",
       "source": "claude",
@@ -54667,7 +55469,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
-      "source_location": "L44",
+      "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
       "source": "claude_md_claude_claude",
@@ -54711,7 +55513,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L100",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -54733,7 +55535,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L120",
+      "source_location": "L135",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_codeact_agent",
@@ -54766,7 +55568,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L108",
+      "source_location": "L123",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_codeact_agent",
@@ -54777,7 +55579,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L103",
+      "source_location": "L118",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_codeact_agent",
@@ -54788,7 +55590,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L92",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_codeact_agent",
@@ -54810,7 +55612,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L49",
+      "source_location": "L64",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_getting_started",
@@ -54821,7 +55623,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L65",
+      "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_getting_started",
@@ -54832,7 +55634,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L75",
+      "source_location": "L90",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_getting_started",
@@ -54854,7 +55656,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "docs/TESTING.md",
-      "source_location": "L53",
+      "source_location": "L54",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_testing",
@@ -54953,7 +55755,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/TESTING.md",
-      "source_location": "L45",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_testing_testing",
@@ -54964,7 +55766,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/TESTING.md",
-      "source_location": "L31",
+      "source_location": "L35",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_testing_testing",
@@ -54973,5 +55775,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "16108e392d19779c98062f8104aaaa6a9962b142"
+  "built_at_commit": "f134a6c631f8b964922e61bcaa2b248f3406286b"
 }

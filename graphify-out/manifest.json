@@ -220,9 +220,9 @@
     "semantic_hash": ""
   },
   "internal/llm/anthropic.go": {
-    "mtime": 1785521872.9615464,
-    "ast_hash": "38aa58e81aea1563101653f05a381975",
-    "semantic_hash": "38aa58e81aea1563101653f05a381975"
+    "mtime": 1786406165.8406913,
+    "ast_hash": "e3d0b3e0b56578862f57831fa4af573a",
+    "semantic_hash": ""
   },
   "internal/llm/llm.go": {
     "mtime": 1785521781.4128268,
@@ -595,13 +595,13 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1786387778.6256037,
-    "ast_hash": "5c1bd17c8961658e152e863694dbb3a2",
+    "mtime": 1786389021.5340936,
+    "ast_hash": "e59dedc67a77188769a7a5359fdd1bbb",
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1786387750.0813034,
-    "ast_hash": "00a7b163ba5fe01942e2e3db51e20d19",
+    "mtime": 1786389010.5656548,
+    "ast_hash": "3fbb28ed06ea665fad4b46d014121fcc",
     "semantic_hash": ""
   },
   "cmd/web/static/index.html": {
@@ -615,8 +615,23 @@
     "semantic_hash": ""
   },
   "docs/TESTING.md": {
-    "mtime": 1786335214.242777,
-    "ast_hash": "7eaad0ea5479dead094af1bc4f2e64a0",
+    "mtime": 1786406273.1867197,
+    "ast_hash": "8200795004891a07963411f96d413b3b",
+    "semantic_hash": ""
+  },
+  "internal/llm/anthropic_test.go": {
+    "mtime": 1786406208.5779178,
+    "ast_hash": "d56b55e6bded86efc77a239fee35639a",
+    "semantic_hash": ""
+  },
+  "internal/llm/llm_test.go": {
+    "mtime": 1786406218.99555,
+    "ast_hash": "920300a80338935a5f63787ed3adad2f",
+    "semantic_hash": ""
+  },
+  "internal/llm/ollama_test.go": {
+    "mtime": 1786406192.6376836,
+    "ast_hash": "aa23ae602b0b832ed6bad0e4cacb8a43",
     "semantic_hash": ""
   }
 }

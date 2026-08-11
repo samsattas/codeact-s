@@ -14,14 +14,18 @@ import (
 type AnthropicProvider struct {
 	apiKey string
 	model  string
-	client *http.Client
+	// baseURL defaults to the real Anthropic API; overridden by tests to
+	// point at an httptest.Server instead.
+	baseURL string
+	client  *http.Client
 }
 
 func NewAnthropicProvider(apiKey, model string) *AnthropicProvider {
 	return &AnthropicProvider{
-		apiKey: apiKey,
-		model:  model,
-		client: &http.Client{Timeout: 2 * time.Minute},
+		apiKey:  apiKey,
+		model:   model,
+		baseURL: "https://api.anthropic.com",
+		client:  &http.Client{Timeout: 2 * time.Minute},
 	}
 }
 
@@ -64,7 +68,7 @@ func (p *AnthropicProvider) Generate(ctx context.Context, systemPrompt, userProm
 		return "", err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "https://api.anthropic.com/v1/messages", bytes.NewReader(buf))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, p.baseURL+"/v1/messages", bytes.NewReader(buf))
 	if err != nil {
 		return "", err
 	}

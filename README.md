@@ -135,3 +135,7 @@ docs/             Architecture and testing notes
 ## Deployment
 
 Not yet deployed. This section will link to a live instance once one is up.
+
+## License
+
+[MIT](LICENSE)

@@ -1,16 +1,16 @@
 # Graph Report - CodeAct-Style  (2026-08-10)
 
 ## Corpus Check
-- 122 files · ~109,306 words
+- 125 files · ~110,582 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2196 nodes · 2713 edges · 144 communities (119 shown, 25 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 73 edges (avg confidence: 0.67)
+- 2218 nodes · 2761 edges · 145 communities (120 shown, 25 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 85 edges (avg confidence: 0.69)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `16108e39`
+- Built from commit: `f134a6c6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -49,9 +49,9 @@
 - .generate_config_string
 - inject-brand-context.cjs
 - embed-tokens.cjs
-- duration
+- primitive
 - patch
-- OllamaProvider
+- NewOllamaProvider
 - ._base_config
 - logo/generate.py
 - generate-tokens.cjs
@@ -65,7 +65,7 @@
 - Typography Specifications
 - CodeAct Agent
 - _select_palette_for_mode
-- sm
+- shadow
 - Logo Usage Rules
 - Component Specifications
 - shadcn/ui Accessibility Patterns
@@ -73,7 +73,7 @@
 - Asset Approval Checklist
 - Logo AI Prompt Engineering
 - xl
-- anthropic.go
+- newTestAnthropicProvider
 - none
 - validate_data.py
 - test_sync_brand_to_tokens.py
@@ -130,7 +130,7 @@
 - Slides Reference
 - HTML Slide Template
 - HTML Slide Template
-- default
+- detect_domain
 - How to Use This Skill
 - graphify reference: query, path, explain
 - Slides
@@ -159,6 +159,7 @@
 - .test_default_output_path_typescript
 - .test_default_content_paths_vue
 - .test_add_colors
+- md
 
 ## God Nodes (most connected - your core abstractions)
 1. `TailwindConfigGenerator` - 58 edges
@@ -173,21 +174,21 @@
 10. `Design` - 15 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `newTestServer()` --calls--> `NewSandbox()`  [INFERRED]
-  cmd/web/main_test.go → internal/tools/tools.go
 - `main()` --calls--> `FromEnv()`  [INFERRED]
   cmd/agent/main.go → internal/llm/llm.go
+- `main()` --calls--> `NewSandbox()`  [INFERRED]
+  cmd/web/main.go → internal/tools/tools.go
+- `newTestServer()` --calls--> `NewSandbox()`  [INFERRED]
+  cmd/web/main_test.go → internal/tools/tools.go
 - `main()` --calls--> `NewSandbox()`  [INFERRED]
   cmd/agent/main.go → internal/tools/tools.go
 - `main()` --calls--> `FromEnv()`  [INFERRED]
   cmd/web/main.go → internal/llm/llm.go
-- `main()` --calls--> `NewSandbox()`  [INFERRED]
-  cmd/web/main.go → internal/tools/tools.go
 
 ## Import Cycles
 - None detected.
 
-## Communities (144 total, 25 thin omitted)
+## Communities (145 total, 25 thin omitted)
 
 ### Community 0 - "gray"
 Cohesion: 0.05
@@ -198,12 +199,12 @@ Cohesion: 0.07
 Nodes (42): BM25, detect_domain(), get_cip_brief(), _load_csv(), Load CSV and return list of dicts, Core search function using BM25, Auto-detect the most relevant domain from query, Main search function with auto-domain detection (+34 more)
 
 ### Community 2 - "Sandbox"
-Cohesion: 0.05
-Nodes (62): Agent, fakeProvider, Outcome, Step, fatal(), main(), repl(), runTask() (+54 more)
+Cohesion: 0.06
+Nodes (54): Agent, fakeProvider, Outcome, Step, fatal(), main(), repl(), runTask() (+46 more)
 
 ### Community 3 - "BM25"
-Cohesion: 0.10
-Nodes (21): BM25, _domain_keywords(), _get_bm25(), _load_csv(), _load_product_keywords(), _normalize(), Apply synonym substitution before tokenizing., BM25 ranking algorithm for text search (+13 more)
+Cohesion: 0.13
+Nodes (16): BM25, _domain_keywords(), _get_bm25(), _load_csv(), _load_product_keywords(), _normalize(), Apply synonym substitution before tokenizing., BM25 ranking algorithm for text search (+8 more)
 
 ### Community 4 - "slide_search_core.py"
 Cohesion: 0.09
@@ -234,8 +235,8 @@ Cohesion: 0.05
 Nodes (43): Arbitrary Values, Aspect Ratio, Background Colors, Border Color, Border Radius, Border Style, Border Width, Borders (+35 more)
 
 ### Community 11 - "newTestServer"
-Cohesion: 0.28
-Nodes (13): Context, T, newTestServer(), TestHandleBrowseListsSubdirectoriesOnly(), TestHandleBrowseRejectsMissingPath(), TestHandleInfo(), TestHandleRunRejectsInvalidDir(), TestHandleRunRejectsMissingTask() (+5 more)
+Cohesion: 0.11
+Nodes (26): main(), Context, T, newTestServer(), TestHandleBrowseListsSubdirectoriesOnly(), TestHandleBrowseRejectsMissingPath(), TestHandleInfo(), TestHandleRunRejectsInvalidDir() (+18 more)
 
 ### Community 12 - "generate-slide.py"
 Cohesion: 0.15
@@ -286,8 +287,8 @@ Cohesion: 0.25
 Nodes (13): checkManifest(), formatBytes(), formatOutput(), fs, main(), parseFilename(), path, RULES (+5 more)
 
 ### Community 24 - "design_system.py"
-Cohesion: 0.09
-Nodes (27): ansi_ljust(), _detect_page_type(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system(), _generate_intelligent_overrides() (+19 more)
+Cohesion: 0.11
+Nodes (25): ansi_ljust(), _detect_page_type(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system(), _generate_intelligent_overrides() (+17 more)
 
 ### Community 25 - "button"
 Cohesion: 0.06
@@ -325,17 +326,17 @@ Nodes (10): extractColorsFromTable(), extractCoreAttributes(), extractHexColors(
 Cohesion: 0.18
 Nodes (8): args, fs, minimal, MINIMAL_TOKENS, path, projectRoot, tokensPath, wrapStyle
 
-### Community 34 - "duration"
-Cohesion: 0.20
-Nodes (10): fast, normal, slow, $type, $value, $type, $value, duration (+2 more)
+### Community 34 - "primitive"
+Cohesion: 0.18
+Nodes (11): fast, normal, slow, $type, $value, $type, $value, primitive (+3 more)
 
 ### Community 35 - "patch"
 Cohesion: 0.18
 Nodes (6): Test adding components with overwrite flag., Test successful component addition., Test component addition with subprocess error., Test component addition when npx is not found., Test successful addition of all components., patch
 
-### Community 36 - "OllamaProvider"
-Cohesion: 0.25
-Nodes (7): Client, Context, NewOllamaProvider(), ollamaChatRequest, ollamaChatResponse, ollamaMessage, OllamaProvider
+### Community 36 - "NewOllamaProvider"
+Cohesion: 0.19
+Nodes (14): Client, Context, NewOllamaProvider(), T, TestOllamaProviderGenerateAPIError(), TestOllamaProviderGenerateHTTPError(), TestOllamaProviderGenerateSuccess(), TestOllamaProviderName() (+6 more)
 
 ### Community 37 - "._base_config"
 Cohesion: 0.22
@@ -374,8 +375,8 @@ Cohesion: 0.06
 Nodes (32): 1. Mobile-First Design, 2. Consistent Breakpoint Usage, 3. Test at Breakpoint Boundaries, 4. Use Container for Content Width, 5. Progressive Enhancement, 6. Avoid Too Many Breakpoints, Best Practices, Breakpoint System (+24 more)
 
 ### Community 46 - "radius"
-Cohesion: 0.24
-Nodes (10): $type, $value, $type, $value, primitive, radius, shadow, full (+2 more)
+Cohesion: 0.29
+Nodes (8): $type, $value, $type, $value, radius, default, full, default
 
 ### Community 47 - "Typography Specifications"
 Cohesion: 0.06
@@ -389,9 +390,9 @@ Nodes (25): Architecture, Commands, graphify, Architecture, Design choices, Know
 Cohesion: 0.43
 Nodes (3): Pick the highest-ranked palette matching the resolved mode. Only the dark case…, _select_palette_for_mode(), TestPaletteSelection
 
-### Community 50 - "sm"
-Cohesion: 0.60
-Nodes (5): sm, sm, sm, $type, $value
+### Community 50 - "shadow"
+Cohesion: 0.47
+Nodes (6): sm, shadow, sm, sm, $type, $value
 
 ### Community 51 - "Logo Usage Rules"
 Cohesion: 0.07
@@ -421,9 +422,9 @@ Nodes (25): Common Pitfalls, Core Prompt Structure, Detailed Brief, Eco/Sustaina
 Cohesion: 0.67
 Nodes (4): xl, xl, $type, $value
 
-### Community 58 - "anthropic.go"
-Cohesion: 0.24
-Nodes (7): Client, Context, NewAnthropicProvider(), anthropicMessage, AnthropicProvider, anthropicRequest, anthropicResponse
+### Community 58 - "newTestAnthropicProvider"
+Cohesion: 0.19
+Nodes (14): Client, Context, NewAnthropicProvider(), T, newTestAnthropicProvider(), TestAnthropicProviderGenerateAPIError(), TestAnthropicProviderGenerateConcatenatesTextBlocks(), TestAnthropicProviderGenerateHTTPError() (+6 more)
 
 ### Community 59 - "none"
 Cohesion: 0.67
@@ -550,8 +551,8 @@ Cohesion: 0.14
 Nodes (13): Card Styles, Component Variants, CSS Structures, Feature Grid (3 columns), Layout Decision Flow, Layout Patterns, Layout Selection by Use Case, Metric Styles (+5 more)
 
 ### Community 97 - "search"
-Cohesion: 0.20
-Nodes (7): detect_domain(), Auto-detect the most relevant domain from query. Matches are weighted by…, Main search function with auto-domain detection, search(), Known query -> expected top-domain sanity checks (not exact-row pinning, since…, TestDomainDetection, TestSearchDomains
+Cohesion: 0.14
+Nodes (11): All indexed terms, for suggestion/typo-recovery purposes., Nearest known vocabulary terms for a query that returned 0 hits, so the caller…, Main search function with auto-domain detection, Search stack-specific guidelines, search(), search_stack(), _suggest_terms(), format_output() (+3 more)
 
 ### Community 98 - "brand/references/update.md"
 Cohesion: 0.15
@@ -621,9 +622,9 @@ Nodes (6): Animation Classes, Background Images, Base Structure, Chart.js Integr
 Cohesion: 0.29
 Nodes (6): Animation Classes, Background Images, Base Structure, Chart.js Integration, CSS Variables Reference, HTML Slide Template
 
-### Community 115 - "default"
-Cohesion: 0.67
-Nodes (4): $type, $value, default, default
+### Community 115 - "detect_domain"
+Cohesion: 0.43
+Nodes (3): detect_domain(), Auto-detect the most relevant domain from query. Matches are weighted by…, TestDomainDetection
 
 ### Community 116 - "How to Use This Skill"
 Cohesion: 0.29
@@ -665,6 +666,10 @@ Nodes (3): For git commit hook, For native CLAUDE.md integration, graphify refer
 Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
+### Community 144 - "md"
+Cohesion: 0.67
+Nodes (4): $type, $value, md, md
+
 ## Knowledge Gaps
 - **992 isolated node(s):** `fs`, `path`, `fs`, `path`, `fs` (+987 more)
   These have ≤1 connection - possible missing edges or undocumented components.
@@ -673,8 +678,8 @@ Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphif
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `primitive` connect `radius` to `gray`, `duration`, `color`, `spacing`, `fontSize`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+- **Why does `primitive` connect `primitive` to `gray`, `color`, `spacing`, `radius`, `fontSize`, `shadow`?**
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **Why does `color` connect `color` to `button`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `TailwindConfigGenerator` (e.g. with `TestGeneratedConfigIsValidJs` and `TestTailwindConfigGenerator`) actually correct?**

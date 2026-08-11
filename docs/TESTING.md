@@ -17,16 +17,20 @@ output on a given run.
 
 | Package | Coverage | What's exercised |
 |---|---|---|
-| `internal/tools` | 82.1% | Path-escape rejection, read/write/list, grep correctness, line counting (including that compiled binaries in `bin/` aren't miscounted as text), the `RunCommand` binary allowlist |
+| `internal/llm` | 85.2% | `OllamaProvider` and `AnthropicProvider` against an `httptest.Server` (request shape, success, HTTP-level errors, API-level error payloads), plus `FromEnv`'s provider selection (Anthropic-when-key-set, Ollama-when-reachable, error when neither is available) |
+| `internal/tools` | 82.1% | Path-escape rejection, read/write/list, grep correctness, line counting (including that compiled binaries in `bin/` aren't miscounted as text), the `RunCommand` binary allowlist, that two `Sandbox` instances rooted at different directories don't see each other's files |
 | `internal/agent` | 76.0% | First-try success, retry-and-recover after a compile error, retry-and-recover after a tool error, exhausting all attempts, code-block extraction from a model response |
-| `internal/executor` | 75.6% | Successful execution, compile errors, tool errors surfaced through `Run()`, that `import "os"` is unavailable inside the sandbox, that paths outside the sandbox root are rejected |
-| `cmd/web` | 56.9% | `/api/info`, `/api/run` end to end (streamed NDJSON success and failure), rejecting non-`POST` and malformed requests |
+| `internal/executor` | 75.6% | Successful execution, compile errors, tool errors surfaced through `Run()`, that `import "os"` is unavailable inside the sandbox, that paths outside the sandbox root are rejected, that two concurrent `Run()` calls against different sandboxes stay isolated |
+| `cmd/web` | 63.5% | `/api/info`, `/api/run` end to end (streamed NDJSON success and failure, the per-request `"dir"` override, rejecting an invalid directory), `/api/browse` (listing subdirectories only, rejecting a missing path), rejecting non-`POST` and malformed requests |
 
-`cmd/agent` and `internal/llm` are not covered by automated tests: the
-former is a thin CLI wrapper with no branching logic of its own, and the
-latter makes real HTTP calls to Ollama/Anthropic — its correctness is
-validated by exercising it directly (see below) rather than by mocking the
-HTTP layer.
+`cmd/agent` is not covered by automated tests: it's a thin CLI wrapper with
+no branching logic of its own (parses flags, calls `agent.Do`, prints the
+result) — its correctness is validated by exercising it directly (see
+below) rather than by unit tests. `internal/llm` used to be in the same
+boat, since it makes real HTTP calls to Ollama/Anthropic; it's now tested
+by pointing both providers at an `httptest.Server` instead (both
+`OllamaProvider` and `AnthropicProvider` take a configurable base
+URL/host for exactly this reason).
 
 ## What the security-relevant tests actually check
 
@@ -41,6 +45,14 @@ this, not as a hypothetical:
 - `TestSandboxBlocksPathEscape` / `TestResolveBlocksEscape` — assert that a
   path like `../../etc/passwd` is rejected rather than resolved outside the
   sandbox root.
+- `TestSandboxesAreIndependent` / `TestExecutorIsolatesConcurrentSandboxes`
+  — assert that two `tools.Sandbox` instances rooted at different
+  directories can't see or write each other's files, and that running
+  generated code against one sandbox doesn't leak into another running
+  concurrently. This matters because the web UI's `dir` field means the
+  server no longer has a single fixed sandbox root for its whole lifetime
+  (see [docs/ARCHITECTURE.md](ARCHITECTURE.md#sandbox-design)) — the
+  escape check now has to hold per-request, not just once at startup.
 
 ## Manual end-to-end validation
 
